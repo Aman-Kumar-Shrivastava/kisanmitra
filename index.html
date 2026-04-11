@@ -3,9 +3,532 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AgroTrack | Smart Farming Management</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+
+    <!-- 1. Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-leaf"></i> AgroTrack
+            </a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#fields">My Fields</a>
+                <a href="#tracker" class="nav-badge-parent">Crop Tracker <span class="nav-badge">New</span></a>
+                <a href="#pests">Pest Alerts</a>
+                <a href="#reports">Reports</a>
+                <a href="#weather">Weather</a>
+                <a href="#community">Community</a>
+                <a href="#pricing">Pricing</a>
+            </div>
+            <div class="nav-actions">
+                <a href="/login" class="login-btn">Login</a>
+                <a href="/register" class="cta-btn sm">Get Started Free</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 2. Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg image-hero"></div>
+        <div class="hero-content">
+            <h1 class="animate-up" style="--delay: 0.1s">Farm Smarter. <br>Grow Better.</h1>
+            <p class="animate-up" style="--delay: 0.2s">Track your fields, monitor crop health, and protect your harvest — all in one visually stunning dashboard.</p>
+            <div class="hero-buttons animate-up" style="--delay: 0.3s">
+                <a href="/dashboard" class="cta-btn primary-cta">Start Tracking Free</a>
+                <a href="/demo" class="cta-btn secondary-cta"><i class="fa-solid fa-play"></i> Watch Demo</a>
+            </div>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-badge glass animate-up" style="--delay: 0.4s">
+                <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number count-up" data-target="2400">0</span>+
+                    <span class="stat-label">Farmers</span>
+                </div>
+            </div>
+            <div class="stat-badge glass animate-up" style="--delay: 0.5s">
+                <div class="stat-icon"><i class="fa-solid fa-seedling"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number count-up" data-target="98">0</span>%
+                    <span class="stat-label">Crop Success</span>
+                </div>
+            </div>
+            <div class="stat-badge glass animate-up" style="--delay: 0.6s">
+                <div class="stat-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number count-up" data-target="15000">0</span>+
+                    <span class="stat-label">Acres Mapped</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Features Overview Strip -->
+    <section class="features-strip container" id="features">
+        <div class="feature-card scroll-animate fade-up">
+            <div class="feature-icon"><i class="fa-solid fa-map"></i></div>
+            <h3>Field Mapping</h3>
+            <p>Draw boundaries and plan your fields down to the inch.</p>
+        </div>
+        <div class="feature-card scroll-animate fade-up" style="transition-delay: 0.1s">
+            <div class="feature-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+            <h3>Crop Records</h3>
+            <p>Maintain a digital history of every planted seed.</p>
+        </div>
+        <div class="feature-card scroll-animate fade-up" style="transition-delay: 0.2s">
+            <div class="feature-icon warning"><i class="fa-solid fa-bug"></i></div>
+            <h3>Pest Alerts</h3>
+            <p>Early warnings against infestations directly to your phone.</p>
+        </div>
+        <div class="feature-card scroll-animate fade-up" style="transition-delay: 0.3s">
+            <div class="feature-icon"><i class="fa-solid fa-cloud-sun-rain"></i></div>
+            <h3>Weather Setup</h3>
+            <p>Hyper-local forecasts tied to your specific farm grids.</p>
+        </div>
+        <div class="feature-card scroll-animate fade-up" style="transition-delay: 0.4s">
+            <div class="feature-icon"><i class="fa-regular fa-calendar-check"></i></div>
+            <h3>Growth Calendar</h3>
+            <p>Anticipate harvest dates with smart prediction algorithms.</p>
+        </div>
+    </section>
+
+    <!-- 4. How It Works -->
+    <section class="how-it-works bg-light">
+        <div class="container">
+            <div class="section-title text-center scroll-animate fade-up">
+                <h2>How AgroTrack Works</h2>
+                <p>Start managing your farm smarter in just three simple steps.</p>
+            </div>
+            
+            <div class="steps-container">
+                <div class="step-item scroll-animate slide-in-left">
+                    <div class="step-number">1</div>
+                    <div class="step-icon"><i class="fa-solid fa-plus"></i></div>
+                    <h3>Add Your Field</h3>
+                    <p>Use our satellite mapping tool to quickly outline your farm's borders.</p>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step-item scroll-animate slide-in-bottom">
+                    <div class="step-number">2</div>
+                    <div class="step-icon"><i class="fa-solid fa-seedling"></i></div>
+                    <h3>Log Your Crops</h3>
+                    <p>Enter your crop types and planting dates to initialize tracking.</p>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step-item scroll-animate slide-in-right">
+                    <div class="step-number">3</div>
+                    <div class="step-icon"><i class="fa-solid fa-bell"></i></div>
+                    <h3>Get Smart Alerts</h3>
+                    <p>Sit back as our AI monitors conditions and sends actionable insights.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Dashboard Preview -->
+    <section class="dashboard-preview container" id="tracker">
+        <div class="section-title text-center scroll-animate fade-up">
+            <h2>Command Center for Your Farm</h2>
+            <p>Everything you need to know, visible at a glance.</p>
+        </div>
+
+        <div class="mockup-container scroll-animate fade-up">
+            <div class="laptop-frame">
+                <img src="images/dashboard_mockup_1775908095346.png" alt="Dashboard UI" class="dashboard-img" id="dashboard-img">
+            </div>
+            
+            <div class="tooltip tooltip-1 pulse"><i class="fa-solid fa-droplet"></i> Moisture at 45%</div>
+            <div class="tooltip tooltip-2 pulse"><i class="fa-solid fa-chart-line"></i> Yield Up 12%</div>
+            <div class="tooltip tooltip-3 pulse"><i class="fa-solid fa-wheat-awn"></i> Ready in 2wks</div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="/features/dashboard" class="cta-btn secondary-cta">Explore Dashboard Features</a>
+        </div>
+    </section>
+
+    <!-- 6. Pest & Insect Prevention -->
+    <section class="pest-module" id="pests">
+        <div class="container split-layout">
+            <div class="split-image scroll-animate slide-in-left">
+                <img src="images/pest_comparison_1775908263889.png" alt="Pest vs Healthy Crop" class="pest-img" id="pest-img">
+            </div>
+            <div class="split-content scroll-animate slide-in-right">
+                <div class="tag">AI Security</div>
+                <h2>Stop Pests Before They Spread</h2>
+                <p>Our advanced image recognition and AI predictive models give you a head start against crop diseases and insect attacks.</p>
+                
+                <ul class="feature-list">
+                    <li><i class="fa-solid fa-check text-green"></i> <strong>AI Photo Detection:</strong> Snap a pic, we identify the threat.</li>
+                    <li><i class="fa-solid fa-check text-green"></i> <strong>Spray Reminders:</strong> Never miss an optimal application window.</li>
+                    <li><i class="fa-solid fa-check text-green"></i> <strong>Seasonal Heatmaps:</strong> See where infestations are likely to hatch.</li>
+                </ul>
+                
+                <a href="/features/pest-control" class="cta-btn primary-cta mt-2">See Pest Protection Features</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Crop Calendar & Growth Tracker -->
+    <section class="crop-calendar bg-light" id="calendar">
+        <div class="container section-center">
+            <div class="section-title scroll-animate fade-up">
+                <h2>Predictive Growth Calendar</h2>
+                <p>Visualize the exact stage of your crops and predict harvest times with stunning accuracy.</p>
+            </div>
+
+            <div class="timeline-widget glass dark-glass scroll-animate fade-up">
+                <div class="timeline-row">
+                    <div class="crop-info">
+                        <i class="fa-solid fa-seedling"></i> Corn (Field A)
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                        <div class="stage-marker" style="left: 0%">Planting</div>
+                        <div class="stage-marker" style="left: 50%">Silking</div>
+                        <div class="stage-marker active" style="left: 75%">Dent</div>
+                        <div class="stage-marker" style="left: 100%">Harvest</div>
+                    </div>
+                </div>
+
+                <div class="timeline-row">
+                    <div class="crop-info">
+                        <i class="fa-solid fa-leaf"></i> Soybeans (Field B)
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" style="width: 40%; background: var(--warning-color)"></div>
+                        <div class="stage-marker" style="left: 0%">Emerge</div>
+                        <div class="stage-marker active" style="left: 40%">Flower</div>
+                        <div class="stage-marker" style="left: 80%">Pod Fill</div>
+                        <div class="stage-marker" style="left: 100%">Maturity</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="/crop-calendar" class="cta-btn secondary-cta">View Full Crop Calendar</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Weather & Soil Intelligence -->
+    <section class="weather-intelligence" id="weather">
+        <div class="container split-layout alternate">
+            <div class="split-content scroll-animate slide-in-left">
+                <div class="tag">Hyper-Local Data</div>
+                <h2>Microclimate Precision</h2>
+                <p>Stop relying on weather stations 50 miles away. AgroTrack integrates with soil sensors and local satellite data to provide actionable microclimate insights.</p>
+                <div class="mt-4">
+                    <a href="/settings/weather" class="link-btn"><i class="fa-solid fa-gear"></i> Connect your local weather data</a>
+                </div>
+            </div>
+            
+            <div class="split-widget scroll-animate slide-in-right">
+                <div class="weather-card glass">
+                    <div class="weather-header">
+                        <div>
+                            <h4>North Field Block</h4>
+                            <span>Today, 10:30 AM</span>
+                        </div>
+                        <i class="fa-solid fa-cloud-sun text-yellow fa-3x"></i>
+                    </div>
+                    <div class="weather-temp">
+                        24°<span>C</span>
+                        <div class="weather-desc">Partly Cloudy</div>
+                    </div>
+                    <div class="weather-metrics">
+                        <div class="metric"><i class="fa-solid fa-droplet"></i> 65% Hum</div>
+                        <div class="metric"><i class="fa-solid fa-wind"></i> 12 km/h</div>
+                        <div class="metric"><i class="fa-solid fa-water"></i> 40% Soil M</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Reports & Analytics -->
+    <section class="analytics-section bg-dark text-white" id="reports">
+        <div class="container text-center section-title scroll-animate fade-up">
+            <h2>Yield Analytics & Reports</h2>
+            <p class="text-light-green">Turn a season of hard work into actionable spreadsheets and visual charts.</p>
+        </div>
+
+        <div class="container analytics-grid scroll-animate fade-up">
+            <div class="chart-mockup glass">
+                <h4>Yield Comparison (YoY)</h4>
+                <div class="bar-chart">
+                    <div class="bar-group"><div class="bar old" style="height: 40%"></div><div class="bar new" style="height: 60%"></div><span>2021</span></div>
+                    <div class="bar-group"><div class="bar old" style="height: 50%"></div><div class="bar new" style="height: 65%"></div><span>2022</span></div>
+                    <div class="bar-group"><div class="bar old" style="height: 65%"></div><div class="bar new" style="height: 85%"></div><span>2023</span></div>
+                </div>
+            </div>
+            <div class="chart-mockup glass">
+                <h4>Expense Breakdown</h4>
+                <div class="pie-chart-container">
+                    <div class="css-pie-chart"></div>
+                    <ul class="pie-legend">
+                        <li><span class="dot l-green"></span> Fertilizer</li>
+                        <li><span class="dot l-yellow"></span> Seed</li>
+                        <li><span class="dot l-orange"></span> Equipment</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container text-center mt-4 scroll-animate fade-up">
+            <a href="/reports" class="cta-btn primary-cta">Generate My Report</a>
+        </div>
+    </section>
+
+    <!-- 10. Testimonials -->
+    <section class="testimonials" id="community">
+        <div class="container">
+            <div class="section-title text-center scroll-animate fade-up">
+                <h2>Trusted by Growers Worldwide</h2>
+            </div>
+            
+            <div class="testimonial-carousel scroll-animate fade-up">
+                <div class="testimonial-card">
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="quote">"AgroTrack completely changed how we manage our 2,000 acre soybean operation. The early pest warnings saved us thousands this spring."</p>
+                    <div class="farmer-profile">
+                        <img src="images/farmer_1_1775909029792.png" alt="Farmer 1" class="farmer-img" id="farmer-img-1">
+                        <div class="profile-text">
+                            <h4>Thomas R.</h4>
+                            <span>Iowa, USA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card hidden-mobile offset-card">
+                    <div class="stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                    </div>
+                    <p class="quote">"The soil moisture integration alone is worth the subscription. I check the dashboard every morning before heading to the fields."</p>
+                    <div class="farmer-profile">
+                        <img src="images/farmer_2_1775909109751.png" alt="Farmer 2" class="farmer-img" id="farmer-img-2">
+                        <div class="profile-text">
+                            <h4>Elena V.</h4>
+                            <span>Cordoba, Spain</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-dots text-center">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. Pricing -->
+    <section class="pricing bg-light" id="pricing">
+        <div class="container">
+            <div class="section-title text-center scroll-animate fade-up">
+                <h2>Simple, Transparent Pricing</h2>
+                <p>Grow your farm, not your software expenses.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="price-card scroll-animate fade-up">
+                    <div class="plan-name">Starter</div>
+                    <div class="price">$0<span>/mo</span></div>
+                    <p class="plan-desc">Perfect for small plots or hobbyists to get started.</p>
+                    <ul class="plan-features">
+                        <li><i class="fa-solid fa-check"></i> Up to 50 Acres</li>
+                        <li><i class="fa-solid fa-check"></i> Basic Tracking</li>
+                        <li><i class="fa-solid fa-check"></i> 7-Day Weather</li>
+                        <li class="disabled"><i class="fa-solid fa-xmark"></i> AI Pest Alerts</li>
+                    </ul>
+                    <a href="/pricing/free" class="cta-btn secondary-cta full-width">Start Free</a>
+                </div>
+
+                <div class="price-card popular glass dark-glass scroll-animate fade-up" style="transition-delay: 0.1s">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="plan-name">Pro Grower</div>
+                    <div class="price">$49<span>/mo</span></div>
+                    <p class="plan-desc">For serious farmers demanding data-driven results.</p>
+                    <ul class="plan-features">
+                        <li><i class="fa-solid fa-check"></i> Unlimited Acres</li>
+                        <li><i class="fa-solid fa-check"></i> Advanced Analytics</li>
+                        <li><i class="fa-solid fa-check"></i> Microclimate Data</li>
+                        <li><i class="fa-solid fa-check"></i> AI Pest Alerts</li>
+                    </ul>
+                    <a href="/pricing/pro" class="cta-btn primary-cta full-width">Get Pro</a>
+                </div>
+
+                <div class="price-card scroll-animate fade-up" style="transition-delay: 0.2s">
+                    <div class="plan-name">Enterprise</div>
+                    <div class="price">Custom</div>
+                    <p class="plan-desc">Custom implementations for massive scale operations.</p>
+                    <ul class="plan-features">
+                        <li><i class="fa-solid fa-check"></i> White-glove Onboarding</li>
+                        <li><i class="fa-solid fa-check"></i> API Access</li>
+                        <li><i class="fa-solid fa-check"></i> ERP Integrations</li>
+                        <li><i class="fa-solid fa-check"></i> Dedicated Manager</li>
+                    </ul>
+                    <a href="/pricing/enterprise" class="cta-btn outlined full-width">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. Blog Teaser -->
+    <section class="blog-teaser container">
+        <div class="section-title d-flex justify-between items-center scroll-animate fade-up">
+            <div>
+                <h2>From the Community</h2>
+                <p>Latest tips, news, and agricultural best practices.</p>
+            </div>
+            <a href="/community" class="link-btn hidden-mobile">Visit Community <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="blog-grid scroll-animate fade-up">
+            <div class="blog-card">
+                <div class="blog-thumb bg-img-1"></div>
+                <div class="blog-content">
+                    <span class="blog-tag">Agronomy</span>
+                    <h3>Preparing soil for the winter freeze</h3>
+                    <p class="read-time"><i class="fa-regular fa-clock"></i> 5 min read</p>
+                </div>
+            </div>
+            <div class="blog-card">
+                <div class="blog-thumb bg-img-2"></div>
+                <div class="blog-content">
+                    <span class="blog-tag">Technology</span>
+                    <h3>Drone mapping vs Satellite imagery</h3>
+                    <p class="read-time"><i class="fa-regular fa-clock"></i> 8 min read</p>
+                </div>
+            </div>
+            <div class="blog-card">
+                <div class="blog-thumb bg-img-3"></div>
+                <div class="blog-content">
+                    <span class="blog-tag">Economics</span>
+                    <h3>Navigating fertilizer price spikes</h3>
+                    <p class="read-time"><i class="fa-regular fa-clock"></i> 4 min read</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 13. Download App Banner -->
+    <section class="app-banner bg-primary text-white">
+        <div class="container split-layout items-center">
+            <div class="split-content scroll-animate slide-in-left">
+                <h2>Manage Your Farm From Anywhere</h2>
+                <p class="text-light-green mb-4">Take the power of AgroTrack into the fields with our offline-capable mobile app. Get alerts on the go and log data right from the tractor.</p>
+                <div class="app-buttons">
+                    <a href="/app-store" class="store-btn">
+                        <i class="fa-brands fa-apple fa-2x"></i>
+                        <div class="store-text">
+                            <span>Download on the</span>
+                            <strong>App Store</strong>
+                        </div>
+                    </a>
+                    <a href="/play-store" class="store-btn">
+                        <i class="fa-brands fa-google-play fa-2x"></i>
+                        <div class="store-text">
+                            <span>GET IT ON</span>
+                            <strong>Google Play</strong>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="split-image text-center scroll-animate slide-in-right">
+                <img src="images/app_mockup_1775908874755.png" alt="AgroTrack Mobile App" class="app-img" id="app-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- 14. Newsletter Signup -->
+    <section class="newsletter bg-light-green text-center">
+        <div class="container scroll-animate fade-up">
+            <h2>Get Seasonal Yield Tips</h2>
+            <p>Join 15,000+ farmers receiving our weekly growth insights.</p>
+            <form class="newsletter-form mt-4" action="/subscribe" method="POST">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit" class="cta-btn dark-cta">Subscribe</button>
+            </form>
+            <p class="privacy-note mt-2">We care about your data. Read our <a href="/privacy">Privacy Policy</a>.</p>
+        </div>
+    </section>
+
+    <!-- 15. Footer -->
+    <footer class="footer bg-dark">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <a href="#" class="logo text-white">
+                    <i class="fa-solid fa-leaf text-green"></i> AgroTrack
+                </a>
+                <p class="text-gray mt-2">The future of farming, today. Smart analytics and tracking for modern agriculture.</p>
+                <div class="social-links mt-4">
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="/features/dashboard">Dashboard</a></li>
+                    <li><a href="/features/mapping">Field Mapping</a></li>
+                    <li><a href="/features/pest-control">Pest Protection</a></li>
+                    <li><a href="/pricing">Pricing</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="/community">Blog</a></li>
+                    <li><a href="/guides">Farming Guides</a></li>
+                    <li><a href="/help">Help Center</a></li>
+                    <li><a href="/api">API Documentation</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/careers">Careers</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="container footer-bottom">
+            <p>&copy; 2026 AgroTrack Inc. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="/terms">Terms</a>
+                <a href="/privacy">Privacy</a>
+                <div class="language-select">
+                    <i class="fa-solid fa-globe"></i> English
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
