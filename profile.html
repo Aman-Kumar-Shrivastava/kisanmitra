@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroTrack | Farmer Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="profile-page">
+
+    <!-- Navigation Bar — Same as index.html -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-leaf"></i> AgroTrack
+            </a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#fields">My Fields</a>
+                <a href="#tracker" class="nav-badge-parent">Crop Tracker <span class="nav-badge">New</span></a>
+                <a href="#pests">Pest Alerts</a>
+                <a href="#reports">Reports</a>
+                <a href="#weather">Weather</a>
+                <a href="#community">Community</a>
+                <a href="#pricing">Pricing</a>
+            </div>
+            <div class="nav-actions">
+                <a href="profile.html" class="login-btn">Login</a>
+                <a href="/register" class="cta-btn sm">Get Started Free</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+
+    <!-- Header / Hero Section -->
+    <header class="profile-header">
+        <div class="avatar-container">
+            <div class="avatar">VK</div>
+            <div class="plan-badge">Pro</div>
+        </div>
+        <h1>Vikram Kumar</h1>
+        <div class="profile-contact">
+            <span><i class="fa-solid fa-envelope"></i> v.kumar@example-farm.com</span>
+            <span><i class="fa-solid fa-phone"></i> +91 98765 43210</span>
+        </div>
+    </header>
+
+    <main class="profile-container">
+
+        <!-- Personal Info Card -->
+        <section class="profile-card">
+            <h2 class="card-title"><i class="fa-solid fa-id-card"></i> Personal Information</h2>
+            <div class="info-list">
+                <div class="info-item">
+                    <span class="info-label">Full Name</span>
+                    <span class="info-value">Vikram Kumar</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Location</span>
+                    <span class="info-value">Chandigarh, Punjab</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Language Preference</span>
+                    <span class="info-value">English, Hindi</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Member Since</span>
+                    <span class="info-value">March 15, 2024</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Farm Overview Card -->
+        <section class="profile-card">
+            <h2 class="card-title"><i class="fa-solid fa-map-location-dot"></i> Farm Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Total Fields</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">120</div>
+                    <div class="stat-label">Acres Area</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Active Crops</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">94<span style="font-size: 1rem;">%</span></div>
+                    <div class="stat-label">Crop Success Rate</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Connected Devices Card -->
+        <section class="profile-card">
+            <h2 class="card-title"><i class="fa-solid fa-microchip"></i> Connected Devices</h2>
+            <div class="device-list">
+                <div class="device-item">
+                    <div class="device-info">
+                        <div class="device-icon"><i class="fa-solid fa-water"></i></div>
+                        <div class="device-details">
+                            <h4>Soil Sensor Node 1</h4>
+                            <p>Assigned: North Field</p>
+                        </div>
+                    </div>
+                    <div class="status-dot dot-online" title="Online"></div>
+                </div>
+                <div class="device-item">
+                    <div class="device-info">
+                        <div class="device-icon"><i class="fa-solid fa-wind"></i></div>
+                        <div class="device-details">
+                            <h4>AQI & Weather Monitor</h4>
+                            <p>Assigned: Farm Center</p>
+                        </div>
+                    </div>
+                    <div class="status-dot dot-online" title="Online"></div>
+                </div>
+                <div class="device-item">
+                    <div class="device-info">
+                        <div class="device-icon"><i class="fa-solid fa-temperature-half"></i></div>
+                        <div class="device-details">
+                            <h4>DHT11 Probe</h4>
+                            <p>Assigned: Greenhouse 2</p>
+                        </div>
+                    </div>
+                    <div class="status-dot dot-offline" title="Offline"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Subscription Card -->
+        <section class="profile-card">
+            <h2 class="card-title"><i class="fa-solid fa-credit-card"></i> Subscription</h2>
+            <div class="sub-header">
+                <div>
+                    <h3 class="sub-plan">Pro Grower Plan</h3>
+                </div>
+                <div class="active-badge"><i class="fa-solid fa-check-circle"></i> Active</div>
+            </div>
+            <div class="renewal-info">
+                Renews automatically on Oct 15, 2026.
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill"></div>
+                </div>
+                <span class="progress-text">195/300 days used</span>
+            </div>
+        </section>
+
+        <!-- Account Settings Card -->
+        <section class="profile-card">
+            <h2 class="card-title"><i class="fa-solid fa-gear"></i> Account Settings</h2>
+            <div class="settings-grid">
+                <div class="setting-tile">
+                    <div class="setting-header">Notifications <i class="fa-solid fa-bell"></i></div>
+                    <div class="setting-status">Push & Email</div>
+                </div>
+                <div class="setting-tile">
+                    <div class="setting-header">Authentication <i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="setting-status">2FA Enabled</div>
+                </div>
+                <div class="setting-tile">
+                    <div class="setting-header">Pest Alerts <i class="fa-solid fa-bug"></i></div>
+                    <div class="setting-status">Email + SMS</div>
+                </div>
+                <div class="setting-tile">
+                    <div class="setting-header">Data Export <i class="fa-solid fa-file-csv"></i></div>
+                    <div class="setting-status export">Download as CSV <i class="fa-solid fa-download"></i></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logout Button -->
+        <div class="logout-container">
+            <button class="btn-logout">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign out of AgroTrack
+            </button>
+        </div>
+
+    </main>
+
+    <footer style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem;">
+        <p>&copy; 2026 AgroTrack Inc. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
