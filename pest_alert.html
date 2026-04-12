@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pest Alerts | AgroTrack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navbar — Same as index.html -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-leaf"></i> AgroTrack
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="#">Features <i class="fa-solid fa-chevron-down"
+                            style="font-size: 0.8rem; margin-left: 4px;"></i></a>
+                    <ul class="nav-dropdown">
+                        <li><a href="index.html#fields"><i class="fa-solid fa-map icon-left"></i> My Fields</a></li>
+                        <li><a href="index.html#tracker"><i class="fa-solid fa-leaf icon-left"></i> Crop Tracker</a>
+                        </li>
+                        <li><a href="pest_alert.html"><i class="fa-solid fa-bug icon-left"></i> Pest Alerts</a></li>
+                        <li><a href="index.html#reports"><i class="fa-solid fa-chart-line icon-left"></i> Reports</a>
+                        </li>
+                        <li><a href="index.html#weather"><i class="fa-solid fa-cloud-sun icon-left"></i> Weather</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="market.html">Market</a></li>
+                <li><a href="index.html#community">Community</a></li>
+                <li><a href="index.html#pricing">Pricing</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="/register" class="cta-btn sm">Get Started Free</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="pest-page-hero">
+        <div class="pest-hero-content">
+            <span class="tag">AI Powered</span>
+            <h1>Pest Alert Center</h1>
+            <p>Real-time pest detection and risk monitoring for your fields. Stay ahead of infestations before they
+                spread.</p>
+            <a href="pest_report.html" class="cta-btn primary-cta">
+                <i class="fa-solid fa-file-lines"></i> View Full Detection Report
+            </a>
+        </div>
+        <div class="pest-hero-stats">
+            <div class="pest-stat-card">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div>
+                    <span class="pest-stat-num">3</span>
+                    <span class="pest-stat-lbl">Active Alerts</span>
+                </div>
+            </div>
+            <div class="pest-stat-card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div>
+                    <span class="pest-stat-num">2</span>
+                    <span class="pest-stat-lbl">Fields Protected</span>
+                </div>
+            </div>
+            <div class="pest-stat-card">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <div>
+                    <span class="pest-stat-num">2h</span>
+                    <span class="pest-stat-lbl">Last Scan</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Active Alerts Section -->
+    <section class="pest-section container">
+        <div class="pest-section-header">
+            <h2><i class="fa-solid fa-circle-exclamation"></i> Active Pest Alerts</h2>
+            <span class="alert-count-badge">3 Active</span>
+        </div>
+
+        <div class="alert-cards-grid">
+
+            <!-- Alert Card 1 — High -->
+            <div class="alert-card high">
+                <div class="alert-card-top">
+                    <div class="alert-icon-wrap high">
+                        <i class="fa-solid fa-bug"></i>
+                    </div>
+                    <div class="alert-meta">
+                        <h3>Root Borer</h3>
+                        <p><i class="fa-solid fa-map-pin"></i> North Field — Sugarcane</p>
+                    </div>
+                    <span class="risk-label danger"><i class="fa-solid fa-circle"></i> High</span>
+                </div>
+                <div class="alert-body">
+                    <p>Detection rate: <strong>8 moths/trap</strong>. Immediate action recommended. Apply recommended
+                        pesticide within 48 hours.</p>
+                    <div class="alert-gauge">
+                        <div class="gauge-bar">
+                            <div class="gauge-fill high" style="width: 90%;"></div>
+                        </div>
+                        <span>Risk: 90%</span>
+                    </div>
+                </div>
+                <div class="alert-actions">
+                    <a href="pest_report.html" class="cta-btn primary-cta sm">View Report</a>
+                    <button class="cta-btn secondary-cta sm">Mark Treated</button>
+                </div>
+            </div>
+
+            <!-- Alert Card 2 — High -->
+            <div class="alert-card high">
+                <div class="alert-card-top">
+                    <div class="alert-icon-wrap high">
+                        <i class="fa-solid fa-locust"></i>
+                    </div>
+                    <div class="alert-meta">
+                        <h3>Fruit Fly</h3>
+                        <p><i class="fa-solid fa-map-pin"></i> Farm Center — Mixed Crops</p>
+                    </div>
+                    <span class="risk-label danger"><i class="fa-solid fa-circle"></i> High</span>
+                </div>
+                <div class="alert-body">
+                    <p>Detection rate: <strong>13 adults/trap</strong>. Exceeds economic threshold. Deploy pheromone
+                        traps immediately.</p>
+                    <div class="alert-gauge">
+                        <div class="gauge-bar">
+                            <div class="gauge-fill high" style="width: 85%;"></div>
+                        </div>
+                        <span>Risk: 85%</span>
+                    </div>
+                </div>
+                <div class="alert-actions">
+                    <a href="pest_report.html" class="cta-btn primary-cta sm">View Report</a>
+                    <button class="cta-btn secondary-cta sm">Mark Treated</button>
+                </div>
+            </div>
+
+            <!-- Alert Card 3 — Medium -->
+            <div class="alert-card medium">
+                <div class="alert-card-top">
+                    <div class="alert-icon-wrap medium">
+                        <i class="fa-solid fa-worm"></i>
+                    </div>
+                    <div class="alert-meta">
+                        <h3>Top Borer</h3>
+                        <p><i class="fa-solid fa-map-pin"></i> South Field — Sugarcane</p>
+                    </div>
+                    <span class="risk-label medium"><i class="fa-solid fa-circle"></i> Medium</span>
+                </div>
+                <div class="alert-body">
+                    <p>Detection rate: <strong>3 moths/trap</strong>. Monitor closely. Consider preventive spray next
+                        week.</p>
+                    <div class="alert-gauge">
+                        <div class="gauge-bar">
+                            <div class="gauge-fill medium" style="width: 50%;"></div>
+                        </div>
+                        <span>Risk: 50%</span>
+                    </div>
+                </div>
+                <div class="alert-actions">
+                    <a href="pest_report.html" class="cta-btn primary-cta sm">View Report</a>
+                    <button class="cta-btn secondary-cta sm">Mark Treated</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- All Monitored Pests Table -->
+    <section class="pest-section container">
+        <div class="pest-section-header">
+            <h2><i class="fa-solid fa-table-list"></i> All Monitored Pests</h2>
+        </div>
+        <div class="table-responsive">
+            <table class="report-table data-table">
+                <thead>
+                    <tr>
+                        <th>Pest Name</th>
+                        <th>Field</th>
+                        <th>Threshold Level</th>
+                        <th class="text-center">Gauge</th>
+                        <th>Risk Level</th>
+                        <th>Last Detected</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="fa-solid fa-bug text-danger"></i> Root Borer</td>
+                        <td>North Field</td>
+                        <td>8 moths/trap</td>
+                        <td class="gauge-cell"><i class="fa-solid fa-gauge-high gauge-red"></i></td>
+                        <td><span class="risk-label danger"><i class="fa-solid fa-circle"></i> High</span></td>
+                        <td>Today, 6:00 AM</td>
+                        <td><a href="pest_report.html" class="link-btn">Details →</a></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fa-solid fa-locust text-danger"></i> Fruit Fly</td>
+                        <td>Farm Center</td>
+                        <td>13 adults/trap</td>
+                        <td class="gauge-cell"><i class="fa-solid fa-gauge-high gauge-red"></i></td>
+                        <td><span class="risk-label danger"><i class="fa-solid fa-circle"></i> High</span></td>
+                        <td>Today, 6:00 AM</td>
+                        <td><a href="pest_report.html" class="link-btn">Details →</a></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fa-solid fa-worm text-warning"></i> Top Borer</td>
+                        <td>South Field</td>
+                        <td>3 moths/trap</td>
+                        <td class="gauge-cell"><i class="fa-solid fa-gauge gauge-yellow"></i></td>
+                        <td><span class="risk-label medium"><i class="fa-solid fa-circle"></i> Medium</span></td>
+                        <td>Yesterday</td>
+                        <td><a href="pest_report.html" class="link-btn">Details →</a></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fa-solid fa-bug text-safe"></i> Internode Borer</td>
+                        <td>East Field</td>
+                        <td>1 moth/trap</td>
+                        <td class="gauge-cell"><i class="fa-solid fa-gauge-simple gauge-green"></i></td>
+                        <td><span class="risk-label safe"><i class="fa-solid fa-circle"></i> Low</span></td>
+                        <td>2 days ago</td>
+                        <td><a href="pest_report.html" class="link-btn">Details →</a></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fa-solid fa-bug text-safe"></i> White Grub</td>
+                        <td>Greenhouse 2</td>
+                        <td>7 beetles/trap</td>
+                        <td class="gauge-cell"><i class="fa-solid fa-gauge-simple gauge-green"></i></td>
+                        <td><span class="risk-label safe"><i class="fa-solid fa-circle"></i> Low</span></td>
+                        <td>3 days ago</td>
+                        <td><a href="pest_report.html" class="link-btn">Details →</a></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fa-solid fa-bug text-safe"></i> Tobacco Moth</td>
+                        <td>West Field</td>
+                        <td>2 moths/trap</td>
+                        <td class="gauge-cell"><i class="fa-solid fa-gauge-simple gauge-green"></i></td>
+                        <td><span class="risk-label safe"><i class="fa-solid fa-circle"></i> Low</span></td>
+                        <td>4 days ago</td>
+                        <td><a href="pest_report.html" class="link-btn">Details →</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Prevention Tips -->
+    <section class="pest-section pest-tips-section">
+        <div class="container">
+            <div class="pest-section-header">
+                <h2><i class="fa-solid fa-lightbulb"></i> Prevention Tips</h2>
+            </div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fa-solid fa-spray-can-sparkles"></i></div>
+                    <h4>Timely Spraying</h4>
+                    <p>Apply recommended pesticides early morning or evening for maximum effectiveness and minimal crop
+                        stress.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fa-solid fa-rotate"></i></div>
+                    <h4>Crop Rotation</h4>
+                    <p>Rotate crops every season to break pest breeding cycles and reduce soil-borne infestations
+                        naturally.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                    <h4>Regular Scouting</h4>
+                    <p>Walk your fields weekly and check traps. Early detection saves upto 80% of potential crop loss.
+                    </p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fa-solid fa-droplet"></i></div>
+                    <h4>Water Management</h4>
+                    <p>Avoid waterlogging as it attracts pests. Use drip irrigation to maintain optimal soil moisture
+                        levels.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <a href="index.html" class="logo text-white">
+                    <i class="fa-solid fa-leaf text-green"></i> AgroTrack
+                </a>
+                <p class="text-gray mt-2">The future of farming, today. Smart analytics and tracking for modern
+                    agriculture.</p>
+                <div class="social-links mt-4">
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="index.html#tracker">Dashboard</a></li>
+                    <li><a href="index.html#fields">Field Mapping</a></li>
+                    <li><a href="pest_alert.html">Pest Protection</a></li>
+                    <li><a href="index.html#pricing">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="index.html#community">Blog</a></li>
+                    <li><a href="#">Farming Guides</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">API Documentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2026 AgroTrack Inc. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <div class="language-select">
+                    <i class="fa-solid fa-globe"></i> English
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

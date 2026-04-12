@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop & Soil Report | AgroTrack</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar no-print" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-leaf"></i> AgroTrack
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="#">Features <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: 4px;"></i></a>
+                    <ul class="nav-dropdown">
+                        <li><a href="index.html#fields"><i class="fa-solid fa-map icon-left"></i> My Fields</a></li>
+                        <li><a href="index.html#tracker"><i class="fa-solid fa-leaf icon-left"></i> Crop Tracker</a></li>
+                        <li><a href="pest_alert.html"><i class="fa-solid fa-bug icon-left"></i> Pest Alerts</a></li>
+                        <li><a href="crop_report.html"><i class="fa-solid fa-chart-line icon-left"></i> Reports</a></li>
+                        <li><a href="index.html#weather"><i class="fa-solid fa-cloud-sun icon-left"></i> Weather</a></li>
+                    </ul>
+                </li>
+                <li><a href="market.html">Market</a></li>
+                <li><a href="index.html#community">Community</a></li>
+                <li><a href="index.html#pricing">Pricing</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="/register" class="cta-btn sm">Get Started Free</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero / Header -->
+    <section class="crop-report-hero">
+        <div class="container report-hero-container">
+            <div class="report-hero-left">
+                <span class="tag">AI Generated</span>
+                <h1>Crop & Soil Report</h1>
+                <p>Complete field-wise soil analysis and crop health overview</p>
+                <div class="farmer-meta-chips">
+                    <span class="chip"><i class="fa-solid fa-user"></i> John Doe</span>
+                    <span class="chip"><i class="fa-solid fa-phone"></i> +91 9876543210</span>
+                    <span class="chip"><i class="fa-solid fa-location-dot"></i> Khatauli, Muzaffarnagar</span>
+                </div>
+            </div>
+            <div class="report-hero-right no-print">
+                <button class="cta-btn secondary-cta" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Report</button>
+                <button class="cta-btn primary-cta"><i class="fa-solid fa-download"></i> Download PDF</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container mb-4 content-container">
+        
+        <!-- Field Selector Strip -->
+        <div class="field-selector-strip no-print">
+            <div class="field-card active">
+                <div class="field-icon"><i class="fa-solid fa-seedling"></i></div>
+                <span>Field 1</span>
+            </div>
+            <div class="field-card">
+                <div class="field-icon"><i class="fa-solid fa-seedling"></i></div>
+                <span>Field 2</span>
+            </div>
+            <div class="field-card">
+                <div class="field-icon"><i class="fa-solid fa-seedling"></i></div>
+                <span>Field 3</span>
+            </div>
+        </div>
+
+        <div class="report-content-paper">
+            
+            <!-- Report Meta Info Table -->
+            <div class="report-meta-table-grid">
+                <table class="report-meta-table">
+                    <tbody>
+                        <tr><td><strong>Farmer Name:</strong></td><td>John Doe</td></tr>
+                        <tr><td><strong>Contact Number:</strong></td><td>+91 9876543210</td></tr>
+                        <tr><td><strong>Village Name:</strong></td><td>Khatauli</td></tr>
+                        <tr><td><strong>Tehsil:</strong></td><td>Khatauli</td></tr>
+                        <tr><td><strong>District:</strong></td><td>Muzaffarnagar</td></tr>
+                    </tbody>
+                </table>
+                <table class="report-meta-table">
+                    <tbody>
+                        <tr><td><strong>Test Conducted By:</strong></td><td>AgroTrack Central Dept.</td></tr>
+                        <tr><td><strong>GPS Location:</strong></td><td>29.2789° N, 77.7212° E</td></tr>
+                        <tr><td><strong>Total Crop in Acres:</strong></td><td>12.6 Acres</td></tr>
+                        <tr><td><strong>Date of Soil Testing:</strong></td><td>11/07/2025</td></tr>
+                        <tr><td><strong>Scan ID:</strong></td><td>#AGR-98234-CT</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Soil Parameter Table (Main Data Table) -->
+            <div class="soil-param-section mt-4">
+                <h3 class="section-title">Soil Parameter Analysis</h3>
+                <div class="table-responsive">
+                    <table class="report-table data-table soil-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Value</th>
+                                <th>Range</th>
+                                <th class="text-center">Range Eye</th>
+                                <th class="text-center">Indicator</th>
+                                <th>Low</th>
+                                <th>Medium</th>
+                                <th>High</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Nitrogen</strong></td>
+                                <td>167.94 kg/ha</td>
+                                <td>Low</td>
+                                <td><div class="range-eye"><div class="eye-pin pin-low" style="left: 15%;"></div></div></td>
+                                <td class="gauge-cell"><i class="fa-solid fa-gauge-simple gauge-green"></i></td>
+                                <td>&lt; 280</td>
+                                <td>280 - 560</td>
+                                <td>&gt; 560</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Organic Carbon</strong></td>
+                                <td>0.35 %</td>
+                                <td>Low</td>
+                                <td><div class="range-eye"><div class="eye-pin pin-low" style="left: 20%;"></div></div></td>
+                                <td class="gauge-cell"><i class="fa-solid fa-gauge-simple gauge-green"></i></td>
+                                <td>&lt; 0.50</td>
+                                <td>0.50 - 0.75</td>
+                                <td>&gt; 0.75</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Clay</strong></td>
+                                <td>27.0 - 29.1 %</td>
+                                <td>Eligible</td>
+                                <td><div class="range-eye"><div class="eye-pin pin-medium" style="left: 50%;"></div></div></td>
+                                <td class="gauge-cell"><i class="fa-solid fa-gauge gauge-yellow"></i></td>
+                                <td>&lt; 20</td>
+                                <td>20 - 40</td>
+                                <td>&gt; 40</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Potassium</strong></td>
+                                <td>430.6 kg/ha</td>
+                                <td>High</td>
+                                <td><div class="range-eye"><div class="eye-pin pin-high" style="left: 85%;"></div></div></td>
+                                <td class="gauge-cell"><i class="fa-solid fa-gauge-high gauge-red"></i></td>
+                                <td>&lt; 140</td>
+                                <td>140 - 280</td>
+                                <td>&gt; 280</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Phosphorous</strong></td>
+                                <td>14.3 kg/ha</td>
+                                <td>Medium</td>
+                                <td><div class="range-eye"><div class="eye-pin pin-medium" style="left: 45%;"></div></div></td>
+                                <td class="gauge-cell"><i class="fa-solid fa-gauge gauge-yellow"></i></td>
+                                <td>&lt; 10</td>
+                                <td>10 - 25</td>
+                                <td>&gt; 25</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Carbon Storage</strong></td>
+                                <td>25.9 mg/100gm</td>
+                                <td>Moderate</td>
+                                <td><div class="range-eye"><div class="eye-pin pin-medium" style="left: 55%;"></div></div></td>
+                                <td class="gauge-cell"><i class="fa-solid fa-gauge gauge-yellow"></i></td>
+                                <td>&lt; 15</td>
+                                <td>15 - 35</td>
+                                <td>&gt; 35</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Crop Health Summary Cards -->
+            <div class="summary-cards-grid mt-4">
+                <div class="summary-card">
+                    <i class="fa-solid fa-layer-group card-icon"></i>
+                    <div class="card-info">
+                        <span class="val">3</span>
+                        <span class="lbl">Total Fields</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <i class="fa-solid fa-map-location-dot card-icon"></i>
+                    <div class="card-info">
+                        <span class="val">12.6</span>
+                        <span class="lbl">Total Acres</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <i class="fa-solid fa-heart-pulse card-icon heart"></i>
+                    <div class="card-info">
+                        <span class="val">72%</span>
+                        <span class="lbl">Avg Soil Health</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <i class="fa-solid fa-calendar-check card-icon"></i>
+                    <div class="card-info">
+                        <span class="val" style="font-size: 1.5rem; margin-top: 3px;">11/07/2025</span>
+                        <span class="lbl">Last Test Date</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommendation Section -->
+            <div class="recommendation-box mt-4">
+                <h3 class="rec-title"><i class="fa-solid fa-robot"></i> AI Recommendations</h3>
+                <ul class="rec-list">
+                    <li><i class="fa-solid fa-circle-check"></i> Apply Trichoderma for root health.</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Increase nitrogen input via urea application.</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Maintain irrigation schedule — soil moisture is optimal.</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Potassium levels are high — skip potash fertilizer this season.</li>
+                </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="report-action-buttons mt-4 no-print text-center">
+                <button class="cta-btn primary-cta"><i class="fa-solid fa-download"></i> Download Report as PDF</button>
+                <button class="cta-btn secondary-cta"><i class="fa-solid fa-share-nodes"></i> Share Report</button>
+                <button class="cta-btn dark-cta"><i class="fa-solid fa-calendar-plus"></i> Schedule Next Test</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark no-print">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <a href="index.html" class="logo text-white">
+                    <i class="fa-solid fa-leaf text-green"></i> AgroTrack
+                </a>
+                <p class="text-gray mt-2">The future of farming, today. Smart analytics and tracking for modern agriculture.</p>
+                <div class="social-links mt-4">
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="index.html#tracker">Dashboard</a></li>
+                    <li><a href="index.html#fields">Field Mapping</a></li>
+                    <li><a href="pest_alert.html">Pest Protection</a></li>
+                    <li><a href="index.html#pricing">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="index.html#community">Blog</a></li>
+                    <li><a href="#">Farming Guides</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">API Documentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; 2026 AgroTrack Inc. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <div class="language-select">
+                    <i class="fa-solid fa-globe"></i> English
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
