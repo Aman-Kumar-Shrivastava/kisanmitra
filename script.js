@@ -9,6 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
         navActions.classList.toggle('active');
     });
 
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                navActions.classList.remove('active');
+            }
+        });
+    });
+
     // 2. Sticky Navbar Shadow & Color Change on Scroll
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
@@ -97,5 +106,34 @@ function setupImages() {
         // Will inject actual logic or just path updates via CSS later
     } catch(e) {
         console.log("Image setup error", e)
+    }
+}
+
+// ROI Calculator Logic
+function calculateROI(event) {
+    event.preventDefault();
+    
+    const investment = parseFloat(document.getElementById('roi-investment').value);
+    const revenue = parseFloat(document.getElementById('roi-revenue').value);
+    
+    if (isNaN(investment) || isNaN(revenue) || investment <= 0) {
+        alert("Please enter valid positive numbers for your calculation.");
+        return;
+    }
+    
+    const profit = revenue - investment;
+    const roi = (profit / investment) * 100;
+    
+    const resultDiv = document.getElementById('roi-result-div');
+    const percentSpan = document.getElementById('roi-percentage-val');
+    
+    resultDiv.style.display = 'block';
+    percentSpan.innerText = roi.toFixed(1) + '%';
+    
+    // Change color based on positive or negative ROI
+    if (roi >= 0) {
+        percentSpan.style.color = 'var(--accent-green)';
+    } else {
+        percentSpan.style.color = 'var(--warning-color)';
     }
 }

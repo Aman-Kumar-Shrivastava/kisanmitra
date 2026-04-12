@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroTrack | Market & ROI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-leaf"></i> AgroTrack
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="index.html#features">Features <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: 4px;"></i></a>
+                    <ul class="nav-dropdown">
+                        <li><a href="index.html#fields"><i class="fa-solid fa-map icon-left"></i> My Fields</a></li>
+                        <li><a href="index.html#tracker"><i class="fa-solid fa-leaf icon-left"></i> Crop Tracker</a></li>
+                        <li><a href="index.html#pests"><i class="fa-solid fa-bug icon-left"></i> Pest Alerts</a></li>
+                        <li><a href="index.html#reports"><i class="fa-solid fa-chart-line icon-left"></i> Reports</a></li>
+                        <li><a href="index.html#weather"><i class="fa-solid fa-cloud-sun icon-left"></i> Weather</a></li>
+                    </ul>
+                </li>
+                <li><a href="market.html" class="active">Market</a></li>
+                <li><a href="index.html#community">Community</a></li>
+                <li><a href="index.html#pricing">Pricing</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="/register" class="cta-btn sm">Get Started Free</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <header class="market-header">
+        <div class="container animate-up">
+            <h1>Agricultural Market Hub</h1>
+            <p style="font-size: 1.2rem; margin-top: 1rem; opacity: 0.9;">Analyze crop prices, forecast trends, and calculate your return on investments.</p>
+        </div>
+    </header>
+
+    <section class="roi-calculator-section">
+        <div class="container">
+            <div class="roi-card scroll-animate fade-up in-view">
+                <h3><i class="fa-solid fa-calculator"></i> ROI Calculator</h3>
+                <p class="text-center text-gray mb-4">Calculate the potential return on your farming investments, such as new seeds, fertilizers, or equipment.</p>
+                
+                <form id="roi-form" onsubmit="calculateROI(event)">
+                    <div class="form-group">
+                        <label for="roi-investment">Initial Investment Cost ($)</label>
+                        <input type="number" id="roi-investment" required placeholder="e.g. 5000" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="roi-revenue">Expected Revenue / Yield Value ($)</label>
+                        <input type="number" id="roi-revenue" required placeholder="e.g. 8500" min="0">
+                    </div>
+                    <button type="submit" class="cta-btn primary-cta full-width">Calculate ROI</button>
+                </form>
+
+                <div class="roi-result" id="roi-result-div">
+                    <h4>Estimated Return on Investment</h4>
+                    <div class="roi-percentage" id="roi-percentage-val">0%</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer bg-dark">
+        <div class="container footer-bottom text-center">
+            <p>&copy; 2026 AgroTrack Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
