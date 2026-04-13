@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mitra | AgroTrack</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; 
+            background-color: #f4f6f0;
+            font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+        }
+
+        .navbar { z-index: 1000; position: fixed; top: 0; width: 100%; }
+
+        .app-container {
+            display: flex;
+            height: calc(100vh - 70px);
+            margin-top: 70px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            background: #fff;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Main Chat Area */
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #efeae2;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M50 0 L100 50 L50 100 L0 50 Z" fill="rgba(0,0,0,0.02)"/></svg>');
+            position: relative;
+        }
+
+        /* Chat Header */
+        .chat-header {
+            background: #1a4a2e;
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        .bot-avatar {
+            width: 45px; height: 45px;
+            background: white; color: #1a4a2e;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+        }
+        .bot-info h2 { margin: 0; font-size: 1.2rem; font-family: var(--font-heading); display:flex; align-items:center; gap:0.5rem;}
+        .status { font-size: 0.85rem; color: #a7f3d0; display: flex; align-items: center; gap: 0.4rem; }
+        .status-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; animation: blink 2s infinite; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; }}
+
+        .header-controls { display: flex; align-items: center; gap: 0.5rem; }
+
+        /* Language Toggle - Pill Style */
+        .lang-pill {
+            display: flex;
+            background: rgba(255,255,255,0.15);
+            border-radius: 30px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .lang-btn {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .lang-btn.active { background: white; color: #1a4a2e; font-weight: 700; border-radius: 30px;}
+
+        /* Tab Switcher */
+        .tab-switcher {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: 0.2s;
+        }
+        .tab-btn.active {
+            color: var(--primary-green);
+            border-bottom-color: var(--primary-green);
+            background: #f0fdf4;
+        }
+
+        /* Panel Containers */
+        .panel { flex: 1; display: none; flex-direction: column; overflow: hidden; }
+        .panel.active { display: flex; }
+
+        /* Chat Messages */
+        .chat-messages {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            position: relative;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            animation: popIn 0.3s ease-out;
+            word-wrap: break-word;
+        }
+        @keyframes popIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .message-time { font-size: 0.75rem; color: rgba(0,0,0,0.4); text-align: right; margin-top: 0.5rem; display: block; }
+        .message.user { align-self: flex-end; background: #4caf7d; color: white; border-bottom-right-radius: 0; }
+        .message.user .message-time { color: rgba(255,255,255,0.8); }
+        .message.ai { align-self: flex-start; background: #ffffff; border-bottom-left-radius: 0; border-left: 4px solid var(--primary-green); color: #0f172a; }
+
+        /* Vision Upload Area */
+        .vision-container { padding: 2rem; overflow-y: auto; display: flex; flex-direction: column; gap:1.5rem; height: 100%;}
+        .upload-box {
+            border: 3px dashed var(--primary-green);
+            border-radius: 20px;
+            background: rgba(255,255,255,0.7);
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 1rem;
+        }
+        .upload-box:hover { background: #f0fdf4; }
+        .upload-box i { font-size: 4rem; color: var(--primary-green); margin-bottom: 1rem; }
+        .upload-box h3 { font-size: 1.5rem; color: var(--text-main); margin-bottom: 0.5rem;}
+        .upload-box p { color: var(--text-muted); }
+
+        #vision-preview-area { display: none; background: white; border-radius: 12px; padding: 1rem; box-shadow: var(--shadow-sm); }
+        #vision-img-preview { max-width: 100%; max-height: 250px; border-radius: 8px; object-fit: contain; display: block; margin: 0 auto 1rem; }
+        
+        .ai-result-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: #334155;
+            white-space: pre-wrap;
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            align-self: flex-start; background: #ffffff; padding: 1rem 1.5rem; border-radius: 20px; border-bottom-left-radius: 0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1); display: none; gap: 5px; border-left: 4px solid var(--primary-green);
+        }
+        .dot { width: 8px; height: 8px; background: #cbd5e1; border-radius: 50%; animation: typing 1.4s infinite; }
+        .dot:nth-child(2) { animation-delay: 0.2s; } .dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); background: var(--primary-green); } }
+
+        /* Bottom Section */
+        .chat-bottom-wrapper { background: white; padding: 0 1.5rem 1rem; border-top: 1px solid #e2e8f0;}
+        .suggested-qs { display: flex; gap: 0.8rem; overflow-x: auto; padding: 1rem 0; scrollbar-width: none; }
+        .suggested-qs::-webkit-scrollbar { display: none; }
+        .sugg-btn {
+            background: #f1f5f9; border: 1px solid transparent; padding: 0.6rem 1.2rem; border-radius: 20px;
+            color: var(--text-main); font-size: 0.9rem; font-weight: 500; cursor: pointer; white-space: nowrap; transition: 0.2s;
+        }
+        .sugg-btn:hover { background: #e0f2fe; color: #0284c7; }
+
+        .chat-input-bar {
+            background: #f1f5f9; padding: 0.6rem; display: flex; align-items: center; gap: 0.6rem; border-radius: 30px;
+        }
+        .action-btn {
+            width: 45px; height: 45px; border: none; background: transparent; color: #64748b; border-radius: 50%;
+            font-size: 1.3rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;
+        }
+        .action-btn:hover { color: var(--primary-green); background: #e2e8f0; }
+        .mic-btn.recording { color: #ef4444; animation: pulse-red 1.5s infinite; }
+        @keyframes pulse-red { 0% { background: rgba(239, 68, 68, 0.1); } 50% { background: rgba(239, 68, 68, 0.3); } 100% { background: rgba(239, 68, 68, 0.1); } }
+        
+        .chat-input { flex: 1; border: none; padding: 0.8rem 1rem; font-size: 1.05rem; background: transparent; font-family: inherit;}
+        .chat-input:focus { outline: none; }
+        .send-btn { width: 45px; height: 45px; border: none; background: var(--primary-green); color: white; border-radius: 50%; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .send-btn:hover { background: #166534; }
+
+        /* History Collapsible */
+        .history-accordion {
+            background: white; border-top: 1px solid #e2e8f0; padding: 0.8rem 1.5rem;
+        }
+        .history-header {
+            display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--text-main); cursor: pointer;
+        }
+        .history-content { display: none; padding-top: 1rem; max-height: 150px; overflow-y: auto;}
+        .history-content.show { display: block; }
+        .hist-item { padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; cursor: pointer; color: var(--text-muted);}
+        .hist-item:hover { color: var(--primary-green); }
+
+        #file-upload { display: none; }
+        #vision-file-upload { display: none; }
+        
+        /* Modal for Claude API settings */
+        .api-modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 2000; display: none; align-items: center; justify-content: center; }
+        .api-modal.show { display: flex; }
+        .api-modal-content { background: white; border-radius: 16px; padding: 2rem; width: 90%; max-width: 500px; }
+        .api-modal-content input { width: 100%; padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 8px; margin-top: 1rem; }
+        .modal-actions { margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem; }
+        .modal-btn { padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 600; border: none;}
+        .modal-cancel { background: #f1f5f9; color: #64748b; }
+        .modal-save { background: var(--primary-green); color: white; }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><i class="fa-solid fa-leaf"></i> AgroTrack</a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="index.html#features">Features <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: 4px;"></i></a>
+                    <ul class="nav-dropdown">
+                        <li><a href="my_fields.html"><i class="fa-solid fa-map icon-left"></i> My Fields</a></li>
+                        <li><a href="crop_tracker.html"><i class="fa-solid fa-leaf icon-left"></i> Crop Tracker</a></li>
+                        <li><a href="pest_alert.html"><i class="fa-solid fa-bug icon-left"></i> Pest Alerts</a></li>
+                        <li><a href="crop_report.html"><i class="fa-solid fa-chart-line icon-left"></i> Reports</a></li>
+                        <li><a href="weather.html"><i class="fa-solid fa-cloud-sun icon-left"></i> Weather</a></li>
+                        <li><a href="ai_mitra.html"><i class="fa-solid fa-comments icon-left"></i> AI Mitra Chat</a></li>
+                    </ul>
+                </li>
+                <li><a href="market.html">Market</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="ai_mitra.html" class="active"><i class="fa-solid fa-robot icon-left"></i> AI Mitra</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="app-container">
+        <div class="chat-main">
+            <!-- Header -->
+            <div class="chat-header">
+                <div class="header-left">
+                    <div class="bot-avatar"><i class="fa-solid fa-robot"></i></div>
+                    <div class="bot-info">
+                        <h2 id="bot-name-head">AI Mitra</h2>
+                        <div class="status"><span class="status-dot"></span> <span>Online</span></div>
+                    </div>
+                </div>
+                
+                <div class="header-controls">
+                    <div class="lang-pill">
+                        <button class="lang-btn active" id="lang-hi">🇮🇳 हिंदी</button>
+                        <button class="lang-btn" id="lang-en">🇬🇧 English</button>
+                    </div>
+                    <button class="lang-btn" id="settings-btn" title="API Settings"><i class="fa-solid fa-gear" style="color:white; font-size:1.2rem;"></i></button>
+                </div>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="tab-switcher">
+                <button class="tab-btn active" data-tab="chat"><i class="fa-regular fa-comment-dots"></i> Chat with AI</button>
+                <button class="tab-btn" data-tab="vision"><i class="fa-solid fa-camera"></i> AI Vision</button>
+            </div>
+
+            <!-- Chat Panel -->
+            <div id="panel-chat" class="panel active">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message ai">
+                        <strong style="color:var(--primary-green); display:block; margin-bottom:0.5rem;"><i class="fa-solid fa-leaf"></i> AI Mitra</strong>
+                        <span class="msg-text">नमस्ते किसान भाई! मैं आपका AI मित्र हूँ। आप खेती, मौसम, या फसल की बीमारियों के बारे में मुझसे सवाल पूछ सकते हैं।</span>
+                        <span class="message-time">10:00 AM</span>
+                    </div>
+                    <div id="msg-anchor"></div>
+                    <div class="typing-indicator" id="typing-indicator">
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vision Panel -->
+            <div id="panel-vision" class="panel">
+                <div class="vision-container">
+                    <input type="file" id="vision-file-upload" accept="image/*">
+                    <div class="upload-box" id="vision-upload-trigger">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <h3 id="vision-title">Crop ka photo upload karo</h3>
+                        <p id="vision-desc">Drag & drop or click to browse files</p>
+                    </div>
+
+                    <div id="vision-preview-area">
+                        <img id="vision-img-preview" src="" alt="Preview">
+                        <div class="typing-indicator vision-typing" id="vision-typing" style="align-self:center; display:none; margin: 0 auto; box-shadow:none;">
+                            Analyzing... <div class="dot" style="margin-left:10px;"></div><div class="dot"></div><div class="dot"></div>
+                        </div>
+                        <div class="ai-result-card" id="vision-result-card" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Wrapper -->
+            <div class="chat-bottom-wrapper">
+                <div class="suggested-qs" id="suggested-qs"></div>
+
+                <div class="chat-input-bar">
+                    <input type="file" id="file-upload" accept="image/*" style="display:none;">
+                    <button class="action-btn" id="camera-btn" title="Open Vision"><i class="fa-solid fa-camera"></i></button>
+                    
+                    <input type="text" class="chat-input" id="chat-input" placeholder="अपना सवाल यहाँ लिखें..." autocomplete="off">
+                    
+                    <button class="action-btn mic-btn" id="mic-btn" title="Speak"><i class="fa-solid fa-microphone"></i></button>
+                    <button class="send-btn" id="send-btn" title="Send"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+
+            <!-- Memory Accoridon -->
+            <div class="history-accordion">
+                <div class="history-header" id="hist-toggle">
+                    <span><i class="fa-solid fa-clipboard-list"></i> Previous Conversations</span>
+                    <i class="fa-solid fa-chevron-down" id="hist-icon"></i>
+                </div>
+                <div class="history-content" id="hist-content">
+                    <div class="hist-item">📅 Today: "मेरी फसल पीली क्यों..."</div>
+                    <div class="hist-item">📅 Yesterday: "Wheat harvest dates..."</div>
+                    <div class="hist-item" style="text-align:center; color:var(--accent-teal);">Clear History</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuration Modal -->
+    <div class="api-modal" id="api-modal">
+        <div class="api-modal-content">
+            <h3 style="margin:0;"><i class="fa-solid fa-microchip" style="color:var(--primary-green)"></i> Claude API Setup (Optional)</h3>
+            <p>Connect AI Mitra to Anthropic's Claude API. (Mock mode will be used if left blank).</p>
+            <input type="password" id="api-key-input" placeholder="sk-ant-...">
+            <div class="modal-actions">
+                <button class="modal-btn modal-cancel" id="api-cancel">Cancel</button>
+                <button class="modal-btn modal-save" id="api-save">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentLang = 'hi';
+            
+            const chatMessages = document.getElementById('chat-messages');
+            const chatInput = document.getElementById('chat-input');
+            const sendBtn = document.getElementById('send-btn');
+            const micBtn = document.getElementById('mic-btn');
+            const typingIndicator = document.getElementById('typing-indicator');
+            const suggQsContainer = document.getElementById('suggested-qs');
+
+            // Tabs Logic
+            const tabs = document.querySelectorAll('.tab-btn');
+            const panels = document.querySelectorAll('.panel');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    panels.forEach(p => p.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById(`panel-${tab.dataset.tab}`).classList.add('active');
+                });
+            });
+
+            // Dict/Locale logic
+            const dict = {
+                hi: {
+                    placeholder: "अपना सवाल यहाँ लिखें...",
+                    visionTitle: "Crop ka photo upload karo",
+                    suggested: ["मेरी फसल पीली क्यों हो रही है?", "आज मंडी भाव क्या है?", "सिंचाई कब करें?", "कौन सी खाद डालें?"]
+                },
+                en: {
+                    placeholder: "Type your message here...",
+                    visionTitle: "Upload Crop Photo",
+                    suggested: ["Why are my crops turning yellow?", "Today's mandi rate?", "When should I irrigate?", "Which fertilizer to apply?"]
+                }
+            };
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            let recognition;
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                
+                recognition.onresult = (e) => { chatInput.value = e.results[0][0].transcript; };
+                recognition.onspeechend = () => { recognition.stop(); micBtn.classList.remove('recording'); };
+                
+                micBtn.onclick = () => {
+                    if (micBtn.classList.contains('recording')) {
+                        recognition.stop();
+                    } else {
+                        recognition.lang = currentLang === 'hi' ? 'hi-IN' : 'en-IN';
+                        recognition.start();
+                        micBtn.classList.add('recording');
+                    }
+                };
+            }
+
+            function switchLang(lang) {
+                currentLang = lang;
+                document.getElementById('lang-hi').classList.toggle('active', lang==='hi');
+                document.getElementById('lang-en').classList.toggle('active', lang==='en');
+                
+                chatInput.placeholder = dict[lang].placeholder;
+                document.getElementById('vision-title').innerText = dict[lang].visionTitle;
+
+                suggQsContainer.innerHTML = '';
+                dict[lang].suggested.forEach(q => {
+                    const btn = document.createElement('button');
+                    btn.className = 'sugg-btn';
+                    btn.innerText = q;
+                    btn.onclick = () => { chatInput.value = q; sendMessage(); };
+                    suggQsContainer.appendChild(btn);
+                });
+            }
+
+            document.getElementById('lang-hi').onclick = () => switchLang('hi');
+            document.getElementById('lang-en').onclick = () => switchLang('en');
+            switchLang('hi');
+
+            // History Accordion
+            const histToggle = document.getElementById('hist-toggle');
+            histToggle.onclick = () => {
+                const content = document.getElementById('hist-content');
+                const icon = document.getElementById('hist-icon');
+                content.classList.toggle('show');
+                icon.className = content.classList.contains('show') ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down";
+            };
+
+            // Formatting helper
+            function getTimeString() {
+                const now = new Date();
+                let h = now.getHours(), m = now.getMinutes();
+                const ampm = h >= 12 ? 'PM' : 'AM';
+                h = h % 12 || 12; m = m < 10 ? '0'+m : m;
+                return `${h}:${m} ${ampm}`;
+            }
+
+            function appendMessage(text, isUser) {
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `message ${isUser ? 'user' : 'ai'}`;
+                
+                let html = '';
+                if (!isUser) html += `<strong style="display:block; margin-bottom:0.5rem;"><i class="fa-solid fa-leaf"></i> AI Mitra</strong>`;
+                html += `<span class="msg-text">${text.replace(/\n/g, '<br>')}</span>`;
+                html += `<span class="message-time">${getTimeString()}</span>`;
+                
+                msgDiv.innerHTML = html;
+                chatMessages.insertBefore(msgDiv, typingIndicator);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Chat engine mapping (Mock or Claude logic can go here)
+            async function getClaudeResponse(text) {
+                const apiKey = localStorage.getItem('claude_api_key');
+                if(!apiKey) {
+                    // MOCK fallback mimicking the prompt spec
+                    setTimeout(() => {
+                        typingIndicator.style.display = 'none';
+                        const mockReply = currentLang === 'hi' ? 
+                        "🌱 नमस्ते किसान भाई!\nफसल में कीड़ों के लिए:\n1. बुआई कब हुई थी?\n2. पत्तों में पानी की कमी?\n3. कोई किड़ा या बीमारी के लक्षण?\n\nकृपया फोटो भी भेजें — मैं पहचान करूँगा।" :
+                        "🌱 Hello Farmer!\nRegarding the pest issue:\n1. When was sowing done?\n2. Are the leaves wilting?\n3. Any visible signs of pests?\n\nPlease switch to AI Vision and upload a photo!";
+                        appendMessage(mockReply, false);
+                    }, 1500);
+                    return;
+                }
+                // Actual api logic would use fetch to api.anthropic.com/v1/messages using a proxy or direct if CORS allowed over edge function
+                // ...
+            }
+
+            function sendMessage() {
+                const text = chatInput.value.trim();
+                if (!text) return;
+                appendMessage(text, true);
+                chatInput.value = '';
+                typingIndicator.style.display = 'flex';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // If on vision tab, switch back to chat automatically
+                if(document.querySelector('.tab-btn[data-tab="vision"]').classList.contains('active')) {
+                     document.querySelector('.tab-btn[data-tab="chat"]').click();
+                }
+
+                getClaudeResponse(text);
+            }
+
+            sendBtn.onclick = sendMessage;
+            chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+            // Vision Upload Logic
+            const vUploadTrigger = document.getElementById('vision-upload-trigger');
+            const vFileInput = document.getElementById('vision-file-upload');
+            const cameraBtn = document.getElementById('camera-btn');
+            
+            cameraBtn.onclick = () => {
+                document.querySelector('.tab-btn[data-tab="vision"]').click();
+            };
+
+            vUploadTrigger.onclick = () => vFileInput.click();
+            
+            vFileInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        vUploadTrigger.style.display = 'none';
+                        document.getElementById('vision-preview-area').style.display = 'block';
+                        document.getElementById('vision-img-preview').src = e.target.result;
+                        
+                        document.getElementById('vision-typing').style.display = 'flex';
+                        document.getElementById('vision-result-card').style.display = 'none';
+                        
+                        // Mock Vision Response
+                        setTimeout(() => {
+                            document.getElementById('vision-typing').style.display = 'none';
+                            const resCard = document.getElementById('vision-result-card');
+                            resCard.style.display = 'block';
+                            resCard.innerHTML = `🔍 Analysis Result:
+━━━━━━━━━━━━━━━━
+🐛 Detected: Root Borer
+🌾 Crop: Sugarcane
+⚠️ Risk Level: HIGH 🔴
+━━━━━━━━━━━━━━━━
+💊 Treatment:
+• Chlorpyrifos spray करें
+• 48 घंटे में action लें
+• Field isolate करें
+
+📋 <a href="#" style="color:#2563eb">→ View Full Pest Report</a>`;
+                        }, 2000);
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            // Settings 
+            const apiModal = document.getElementById('api-modal');
+            const apiKeyInput = document.getElementById('api-key-input');
+            document.getElementById('settings-btn').onclick = () => {
+                apiKeyInput.value = localStorage.getItem('claude_api_key') || '';
+                apiModal.classList.add('show');
+            };
+            document.getElementById('api-cancel').onclick = () => apiModal.classList.remove('show');
+            document.getElementById('api-save').onclick = () => {
+                if(apiKeyInput.value.trim()){ localStorage.setItem('claude_api_key', apiKeyInput.value.trim()); } 
+                else { localStorage.removeItem('claude_api_key'); }
+                apiModal.classList.remove('show');
+            };
+        });
+    </script>
+</body>
+</html>
