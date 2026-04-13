@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather & Crop Intelligence | AgroTrack</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* weather.css - Weather Module Styles */
+        :root {
+            --weather-hero-bg: #1e3a8a;
+            --alert-red: #ef4444;
+            --alert-orange: #f97316;
+            --alert-yellow: #eab308;
+            --alert-green: #22c55e;
+        }
+
+        body {
+            font-family: 'Noto Sans', 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        /* 1. Page Hero */
+        .weather-hero {
+            background: linear-gradient(135deg, var(--weather-hero-bg) 0%, #3b82f6 100%);
+            color: white;
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+        }
+        .weather-hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            font-family: var(--font-heading);
+        }
+        .weather-hero p.subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        
+        .header-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .lang-toggle, .location-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid white;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .lang-toggle:hover, .location-btn:hover {
+            background: white;
+            color: var(--weather-hero-bg);
+        }
+        
+        /* 2. Tab Navigation */
+        .weather-tabs-container {
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 70px;
+            z-index: 100;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .weather-tabs {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            min-width: max-content; 
+        }
+        .weather-tab {
+            padding: 1.2rem 2rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .weather-tab:hover {
+            color: var(--primary-green);
+        }
+        .weather-tab.active {
+            color: var(--primary-green);
+            border-bottom-color: var(--primary-green);
+        }
+
+        /* 3. Content Areas */
+        .tab-content {
+            display: none;
+            padding: 3rem 0;
+            animation: fadeIn 0.4s ease-in;
+            min-height: 50vh;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+        }
+
+        .card-panel {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Tab 1: Realtime Weather */
+        .weather-main-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .weather-main-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .weather-main-temp {
+            font-size: 5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1;
+        }
+        .weather-desc {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+        .weather-icon-large {
+            font-size: 6rem;
+            color: #f59e0b;
+            text-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+        }
+        .weather-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 1.2rem;
+        }
+        .metric-box {
+            background: #f8fafc;
+            padding: 1.2rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .metric-box i { font-size: 1.5rem; color: var(--primary-green); margin-bottom: 0.5rem; }
+        .metric-label { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.3rem;}
+        .metric-value { font-size: 1.3rem; font-weight: 700; color: var(--text-main); }
+        
+        .forecast-slider {
+            display: flex;
+            overflow-x: auto;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            scrollbar-width: thin;
+        }
+        .forecast-card {
+            min-width: 120px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .forecast-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-sm); }
+        .forecast-day { font-weight: 600; margin-bottom: 0.5rem; }
+        .forecast-icon { font-size: 2rem; color: #3b82f6; margin: 0.5rem 0; }
+        .forecast-temp { font-weight: 700; }
+
+        /* Tab 2: Crops Intelligence */
+        .crop-selector-wrap {
+            max-width: 500px;
+            margin: 0 auto 3rem;
+            text-align: center;
+        }
+        .crop-selector {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            background: white;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+        .crop-selector:focus { outline: none; border-color: var(--primary-green); }
+        
+        .intelligence-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .intelligence-card { 
+            border-left: 5px solid var(--alert-green); 
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .intelligence-card.unfavorable { border-left-color: var(--alert-red); }
+        .intelligence-card.moderate { border-left-color: var(--alert-yellow); }
+        .int-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+        .int-icon { font-size: 1.8rem; width: 40px; text-align: center; }
+        .int-title { font-weight: 700; font-size: 1.1rem; }
+        .int-desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
+
+        /* Tab 3: Knowledge Base */
+        .kb-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .kb-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .kb-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+        .kb-img {
+            height: 180px;
+            background-color: #e2e8f0;
+            background-size: cover;
+            background-position: center;
+        }
+        .kb-content { padding: 1.5rem; }
+        .kb-tag { color: var(--primary-green); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; display: inline-block; }
+        .kb-title { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-main); }
+        .kb-excerpt { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+
+        /* Tab 4: Alerts */
+        .alerts-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .alert-item {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 5px solid;
+            transition: transform 0.2s;
+        }
+        .alert-item:hover { transform: translateX(5px); }
+        .alert-item.critical { border-left-color: var(--alert-red); background-color: #fef2f2; }
+        .alert-item.warning { border-left-color: var(--alert-orange); background-color: #fff7ed; }
+        .alert-item.info { border-left-color: var(--alert-green); background-color: #f0fdf4; }
+        
+        .alert-icon { font-size: 2rem; margin-top: 0.2rem; }
+        .alert-item.critical .alert-icon { color: var(--alert-red); }
+        .alert-item.warning .alert-icon { color: var(--alert-orange); }
+        .alert-item.info .alert-icon { color: var(--alert-green); }
+        
+        .alert-content h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
+        .alert-content p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.4; margin-bottom: 0.5rem;}
+        .alert-time { font-size: 0.8rem; color: #94a3b8; font-weight: 600; }
+
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-leaf"></i> AgroTrack
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="index.html#features" class="active">Features <i class="fa-solid fa-chevron-down"
+                            style="font-size: 0.8rem; margin-left: 4px;"></i></a>
+                    <ul class="nav-dropdown">
+                        <li><a href="index.html#fields"><i class="fa-solid fa-map icon-left"></i> My Fields</a></li>
+                        <li><a href="index.html#tracker"><i class="fa-solid fa-leaf icon-left"></i> Crop Tracker</a></li>
+                        <li><a href="pest_alert.html"><i class="fa-solid fa-bug icon-left"></i> Pest Alerts</a></li>
+                        <li><a href="crop_report.html"><i class="fa-solid fa-chart-line icon-left"></i> Reports</a></li>
+                        <li><a href="weather.html" class="active"><i class="fa-solid fa-cloud-sun icon-left"></i> Weather</a></li>
+                    </ul>
+                </li>
+                <li><a href="market.html">Market</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="/register" class="cta-btn sm">Get Started Free</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="weather-hero scroll-animate fade-up">
+        <div class="container">
+            <h1 data-key="weather_title">Weather & Agricultural Intelligence</h1>
+            <p class="subtitle" data-key="weather_subtitle">Localized forecasts and crucial crop insights to protect your harvest.</p>
+            
+            <div class="header-controls">
+                <button class="location-btn" id="locationBtn">
+                    <i class="fa-solid fa-location-crosshairs"></i> <span id="locationText">Auto-Detect Location</span>
+                </button>
+                <button class="lang-toggle" id="langToggleBtn">
+                    <i class="fa-solid fa-language"></i> <span id="langText">हिंदी / English</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tab Navigation -->
+    <div class="weather-tabs-container">
+        <div class="container">
+            <ul class="weather-tabs">
+                <li class="weather-tab active" data-tab="forecast"><i class="fa-solid fa-cloud-sun"></i> <span data-key="tab_forecast">Real-Time Forecast</span></li>
+                <li class="weather-tab" data-tab="crops"><i class="fa-solid fa-seedling"></i> <span data-key="tab_crops">Crop Predictions</span></li>
+                <li class="weather-tab" data-tab="knowledge"><i class="fa-solid fa-book-open"></i> <span data-key="tab_knowledge">Knowledge Base</span></li>
+                <li class="weather-tab" data-tab="alerts"><i class="fa-solid fa-bell"></i> <span data-key="tab_alerts">Soil & Crop Alerts</span> <span class="badge bg-red" style="font-size:0.7rem; padding: 2px 6px; border-radius:10px; color:white; background:#ef4444; margin-left:5px;">3</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container pb-4">
+        
+        <!-- Tab 1: Real-Time Forecast -->
+        <div class="tab-content active" id="tab-forecast">
+            <div class="section-header">
+                <h2 data-key="forecast_header">Current Conditions</h2>
+                <p class="text-muted"><i class="fa-solid fa-location-dot"></i> <span id="currentLocDisplay">Ludhiana, Punjab</span> • Updated 10 mins ago</p>
+            </div>
+
+            <div class="card-panel">
+                <div class="weather-main-display">
+                    <div class="weather-main-left">
+                        <i class="fa-solid fa-cloud-sun weather-icon-large"></i>
+                        <div>
+                            <div class="weather-main-temp">28°C</div>
+                            <div class="weather-desc" data-key="weather_desc_sunny">Partly Cloudy</div>
+                            <div style="font-weight: 500; margin-top:5px; color:#64748b;">H: 32° L: 22°</div>
+                        </div>
+                    </div>
+                    
+                    <div class="weather-metrics-grid">
+                        <div class="metric-box">
+                            <i class="fa-solid fa-droplet" style="color: #3b82f6;"></i>
+                            <div class="metric-label" data-key="metric_humidity">Humidity</div>
+                            <div class="metric-value">65%</div>
+                        </div>
+                        <div class="metric-box">
+                            <i class="fa-solid fa-wind" style="color: #94a3b8;"></i>
+                            <div class="metric-label" data-key="metric_wind">Wind Speed</div>
+                            <div class="metric-value">12 km/h</div>
+                        </div>
+                        <div class="metric-box">
+                            <i class="fa-solid fa-cloud-rain" style="color: #60a5fa;"></i>
+                            <div class="metric-label" data-key="metric_rain">Rainfall</div>
+                            <div class="metric-value">0 mm</div>
+                        </div>
+                        <div class="metric-box">
+                            <i class="fa-solid fa-sun" style="color: #f59e0b;"></i>
+                            <div class="metric-label" data-key="metric_uv">UV Index</div>
+                            <div class="metric-value">6 (High)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="mb-3 mt-4" data-key="forecast_7day">7-Day Forecast</h3>
+            <div class="forecast-slider">
+                <div class="forecast-card">
+                    <div class="forecast-day">Today</div>
+                    <i class="fa-solid fa-cloud-sun forecast-icon"></i>
+                    <div class="forecast-temp">28° / 22°</div>
+                </div>
+                <div class="forecast-card">
+                    <div class="forecast-day">Tomorrow</div>
+                    <i class="fa-solid fa-sun forecast-icon" style="color:#f59e0b;"></i>
+                    <div class="forecast-temp">30° / 23°</div>
+                </div>
+                <div class="forecast-card">
+                    <div class="forecast-day">Wed</div>
+                    <i class="fa-solid fa-cloud forecast-icon" style="color:#94a3b8;"></i>
+                    <div class="forecast-temp">27° / 21°</div>
+                </div>
+                <div class="forecast-card">
+                    <div class="forecast-day">Thu</div>
+                    <i class="fa-solid fa-cloud-showers-heavy forecast-icon" style="color:#3b82f6;"></i>
+                    <div class="forecast-temp">24° / 20°</div>
+                </div>
+                <div class="forecast-card">
+                    <div class="forecast-day">Fri</div>
+                    <i class="fa-solid fa-cloud-sun-rain forecast-icon"></i>
+                    <div class="forecast-temp">25° / 20°</div>
+                </div>
+                <div class="forecast-card">
+                    <div class="forecast-day">Sat</div>
+                    <i class="fa-solid fa-sun forecast-icon" style="color:#f59e0b;"></i>
+                    <div class="forecast-temp">28° / 22°</div>
+                </div>
+                <div class="forecast-card">
+                    <div class="forecast-day">Sun</div>
+                    <i class="fa-solid fa-sun forecast-icon" style="color:#f59e0b;"></i>
+                    <div class="forecast-temp">31° / 24°</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Crops Intelligence -->
+        <div class="tab-content" id="tab-crops">
+            <div class="crop-selector-wrap">
+                <h2 class="mb-2" data-key="crops_header">Select Your Crop</h2>
+                <p class="text-muted mb-3" data-key="crops_sub">Get weather suitability and growth recommendations.</p>
+                <select class="crop-selector" id="cropSelect">
+                    <option value="wheat" data-key="crop_wheat">Wheat (गेहूँ)</option>
+                    <option value="rice" data-key="crop_rice">Rice/Paddy (चावल/धान)</option>
+                    <option value="sugarcane" data-key="crop_sugarcane">Sugarcane (गन्ना)</option>
+                    <option value="cotton" data-key="crop_cotton">Cotton (कपास)</option>
+                    <option value="tomato" data-key="crop_tomato">Tomato (टमाटर)</option>
+                </select>
+            </div>
+
+            <div class="intelligence-grid" id="cropIntelligenceContent">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </div>
+
+        <!-- Tab 3: Knowledge Base -->
+        <div class="tab-content" id="tab-knowledge">
+            <div class="section-header text-center">
+                <h2 data-key="kb_header">Weather Knowledge Base</h2>
+                <p class="text-muted" data-key="kb_sub">Learn how weather impacts your farm, in your language.</p>
+            </div>
+            
+            <div class="kb-grid" id="kbContentGrid">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </div>
+
+        <!-- Tab 4: Alerts -->
+        <div class="tab-content" id="tab-alerts">
+            <div class="section-header text-center">
+                <h2 data-key="alerts_header">Soil & Crop Alerts</h2>
+                <p class="text-muted" data-key="alerts_sub">Critical intelligence based on current weather patterns.</p>
+            </div>
+            
+            <div class="alerts-container" id="alertsContentList">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark pt-5">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <a href="#" class="logo text-white">
+                    <i class="fa-solid fa-leaf text-green"></i> AgroTrack
+                </a>
+                <p class="text-gray mt-2">The future of farming, today. Smart analytics and tracking for modern agriculture.</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="index.html#tracker">Dashboard</a></li>
+                    <li><a href="index.html#fields">Field Mapping</a></li>
+                    <li><a href="pest_alert.html">Pest Protection</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="community.html">Community</a></li>
+                    <li><a href="weather.html">Weather</a></li>
+                    <li><a href="crop_report.html">Reports</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container footer-bottom mt-4" style="border-top:1px solid #333; padding-top:20px;">
+            <p>&copy; 2026 AgroTrack Inc. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Main scripts -->
+    <script src="script.js"></script>
+    <script src="weather.js"></script>
+</body>
+</html>
