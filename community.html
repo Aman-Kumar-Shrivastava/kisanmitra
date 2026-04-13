@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Community | AgroTrack</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* community.css - Community Page Styles */
+        :root {
+            --community-hero-bg: #1a4a2e;
+        }
+
+        /* 1. Page Hero */
+        .community-hero {
+            background-color: var(--community-hero-bg);
+            color: var(--text-white);
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .community-hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(76, 175, 125, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .community-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-family: var(--font-heading);
+        }
+
+        .community-hero .subtitle {
+            font-size: 1.2rem;
+            color: #f4f6f0;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.5;
+        }
+
+        .hero-search-wrapper {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .hero-search-wrapper input {
+            width: 100%;
+            padding: 1.2rem 2rem 1.2rem 3rem;
+            border-radius: 30px;
+            border: none;
+            font-size: 1rem;
+            font-family: var(--font-body);
+            box-shadow: var(--shadow-md);
+        }
+
+        .hero-search-wrapper input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 125, 0.3);
+        }
+
+        .hero-search-wrapper i {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .comm-hero-tags {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .comm-hero-tag {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            backdrop-filter: blur(5px);
+            color: var(--text-white);
+        }
+
+        /* 2. Category Filter Tabs */
+        .community-filters {
+            padding: 2rem 0;
+            overflow-x: auto;
+            white-space: nowrap;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+            text-align: center;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .community-filters::-webkit-scrollbar {
+            display: none;
+        }
+
+        .comm-filter-btn {
+            background: transparent;
+            border: 1px solid #dcdcdc;
+            color: var(--text-main);
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-family: var(--font-body);
+            margin: 0 0.4rem;
+            display: inline-block;
+        }
+
+        .comm-filter-btn.active,
+        .comm-filter-btn:hover {
+            background-color: var(--primary-green);
+            color: var(--text-white);
+            border-color: var(--primary-green);
+        }
+
+        /* Tags specifically for posts */
+        .post-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .post-tag.tips { background-color: var(--accent-green); }
+        .post-tag.qa { background-color: #3b82f6; }
+        .post-tag.news { background-color: #f59e0b; }
+        .post-tag.success { background-color: #8b5cf6; }
+        .post-tag.schemes { background-color: #ec4899; }
+        .post-tag.pest { background-color: #ef4444; }
+
+        /* 3. Featured Post (Big Card) */
+        .featured-post-section {
+            margin-bottom: 4rem;
+        }
+
+        .featured-post-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .featured-post-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .featured-post-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 6px;
+            height: 100%;
+            background-color: var(--accent-green);
+        }
+
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-green);
+            color: var(--text-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .author-meta h4 {
+            margin: 0 0 0.2rem 0;
+            font-size: 1.1rem;
+        }
+
+        .author-meta span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .featured-post-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .featured-post-card p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .featured-post-card .hashtags {
+            color: var(--accent-green);
+            font-weight: 500;
+            margin-bottom: 2rem;
+        }
+
+        .post-stats-row {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            margin-top: 2rem;
+        }
+
+        .post-stats-row .stat-item i {
+            margin-right: 0.4rem;
+        }
+
+        /* 4. Discussion Feed Grid */
+        .feed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .feed-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feed-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+        }
+
+        .feed-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+            color: var(--text-main);
+        }
+
+        .feed-card p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .feed-card .post-author {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .feed-card .author-avatar {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+
+        .feed-card .post-stats-row {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: none;
+            font-size: 0.9rem;
+            justify-content: flex-start;
+            gap: 1rem;
+        }
+
+        .feed-card .read-more {
+            margin-left: auto;
+            color: var(--primary-green);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .feed-card .read-more:hover {
+            color: var(--accent-green);
+        }
+
+        /* 5. Post Form */
+        .post-form-section {
+            padding: 4rem 0;
+            background-color: var(--bg-light);
+        }
+
+        .community-form-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow-md);
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media(max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            font-family: var(--font-body);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.2);
+        }
+
+        /* 6. Top Contributors */
+        .top-contributors {
+            padding: 5rem 0;
+        }
+
+        .contributors-row {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            padding: 1rem 0 2rem;
+            scrollbar-width: thin;
+        }
+
+        .contributor-card {
+            min-width: 200px;
+            flex: 0 0 auto;
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .contributor-card .author-avatar {
+            width: 70px;
+            height: 70px;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+        }
+
+        .contributor-card h4 {
+            margin-bottom: 0.2rem;
+            color: var(--text-main);
+        }
+
+        .contributor-badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background-color: rgba(82, 183, 136, 0.1);
+            color: var(--primary-green);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+        }
+
+        .contributor-posts {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* 8. Government Schemes Banner */
+        .schemes-banner {
+            background-color: var(--primary-green);
+            border-radius: 16px;
+            padding: 3rem;
+            color: white;
+            margin: 4rem 0;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .schemes-banner::after {
+            content: '';
+            position: absolute;
+            right: -50px;
+            bottom: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        .schemes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .scheme-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .scheme-card h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .scheme-card p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-leaf"></i> AgroTrack
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="index.html#features">Features <i class="fa-solid fa-chevron-down"
+                            style="font-size: 0.8rem; margin-left: 4px;"></i></a>
+                    <ul class="nav-dropdown">
+                        <li><a href="index.html#fields"><i class="fa-solid fa-map icon-left"></i> My Fields</a></li>
+                        <li><a href="index.html#tracker"><i class="fa-solid fa-leaf icon-left"></i> Crop Tracker</a></li>
+                        <li><a href="pest_alert.html"><i class="fa-solid fa-bug icon-left"></i> Pest Alerts</a></li>
+                        <li><a href="crop_report.html"><i class="fa-solid fa-chart-line icon-left"></i> Reports</a></li>
+                        <li><a href="index.html#weather"><i class="fa-solid fa-cloud-sun icon-left"></i> Weather</a></li>
+                    </ul>
+                </li>
+                <li><a href="market.html">Market</a></li>
+                <li><a href="community.html" class="active">Community</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="/register" class="cta-btn sm">Get Started Free</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="community-hero scroll-animate fade-up">
+        <div class="container">
+            <span class="comm-hero-tag mb-4"><i class="fa-solid fa-users-rectangle"></i> Live Community</span>
+            <h1>Farmer Community</h1>
+            <p class="subtitle">Connect, share, and grow together with 15,000+ farmers across India.</p>
+            
+            <div class="hero-search-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search discussions, topics, farmers...">
+            </div>
+
+            <div class="comm-hero-tags">
+                <div class="comm-hero-tag">
+                    👥 15,000+ Members
+                </div>
+                <div class="comm-hero-tag">
+                    💬 3,200+ Discussions
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Filter Tabs -->
+    <div class="container scroll-animate fade-up mt-4">
+        <div class="community-filters">
+            <button class="comm-filter-btn active">All</button>
+            <button class="comm-filter-btn">Tips & Tricks</button>
+            <button class="comm-filter-btn">Success Stories</button>
+            <button class="comm-filter-btn">Q&A</button>
+            <button class="comm-filter-btn">Weather Updates</button>
+            <button class="comm-filter-btn">Market News</button>
+            <button class="comm-filter-btn">Pest Reports</button>
+            <button class="comm-filter-btn">Government Schemes</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Featured Post (Big Card) -->
+        <section class="featured-post-section scroll-animate fade-up">
+            <div class="featured-post-card">
+                <div class="post-tag success">Success Story</div>
+                <div class="post-author">
+                    <div class="author-avatar" style="background-color: var(--accent-green);">RS</div>
+                    <div class="author-meta">
+                        <h4>Rajveer Singh</h4>
+                        <span><i class="fa-solid fa-location-dot"></i> Ludhiana, Punjab &nbsp;•&nbsp; <i class="fa-regular fa-clock"></i> 2 hours ago</span>
+                    </div>
+                </div>
+                <h2>How I doubled my wheat yield using AgroTrack soil data</h2>
+                <p>After struggling with uneven growth for years, I finally used the soil moisture mapping and precise fertilizer recommendations. The difference is night and day. Here's exactly what I did step-by-step...</p>
+                <div class="hashtags">
+                    #wheat #soilhealth #success #precisionfarming
+                </div>
+                <div class="post-stats-row">
+                    <div class="stat-item"><i class="fa-solid fa-thumbs-up"></i> 142 Likes</div>
+                    <div class="stat-item"><i class="fa-solid fa-comment"></i> 38 Comments</div>
+                    <div class="stat-item"><i class="fa-solid fa-eye"></i> 1.2k Views</div>
+                    <a href="#" class="cta-btn primary-cta" style="margin-left: auto;">Read Full Story</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Discussion Feed (Card Grid) -->
+        <section class="feed-grid scroll-animate fade-up">
+            <!-- Feed Card 1 -->
+            <div class="feed-card">
+                <div class="post-author">
+                    <div class="author-avatar" style="background-color: #f59e0b;">RS</div>
+                    <div class="author-meta">
+                        <h4>Rakesh Sharma</h4>
+                        <span><i class="fa-solid fa-location-dot"></i> Lucknow &nbsp;•&nbsp; 4 hrs ago</span>
+                    </div>
+                </div>
+                <span class="post-tag tips">Tips</span>
+                <h3>Best time to apply urea for sugarcane in UP</h3>
+                <p>I usually apply it after the first irrigation but wondering if splitting it into three doses is better for the hybrid varieties...</p>
+                <div class="post-stats-row">
+                    <div class="stat-item"><i class="fa-solid fa-thumbs-up"></i> 45</div>
+                    <div class="stat-item"><i class="fa-solid fa-comment"></i> 12</div>
+                    <a href="#" class="read-more">Read More &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Feed Card 2 -->
+            <div class="feed-card">
+                <div class="post-author">
+                    <div class="author-avatar" style="background-color: #3b82f6;">GS</div>
+                    <div class="author-meta">
+                        <h4>Gurpreet Singh</h4>
+                        <span><i class="fa-solid fa-location-dot"></i> Amritsar &nbsp;•&nbsp; 6 hrs ago</span>
+                    </div>
+                </div>
+                <span class="post-tag qa">Q&A</span>
+                <h3>My wheat leaves are turning yellow — what's wrong?</h3>
+                <p>The lower leaves are yellowing out. Placed urea 10 days back. Could this be nitrogen deficiency or a sign of waterlogging?</p>
+                <div class="post-stats-row">
+                    <div class="stat-item"><i class="fa-solid fa-thumbs-up"></i> 18</div>
+                    <div class="stat-item"><i class="fa-solid fa-comment"></i> 24</div>
+                    <a href="#" class="read-more">Read More &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Feed Card 3 -->
+            <div class="feed-card">
+                <div class="post-author">
+                    <div class="author-avatar" style="background-color: #8b5cf6;">MD</div>
+                    <div class="author-meta">
+                        <h4>Mohan Das</h4>
+                        <span><i class="fa-solid fa-location-dot"></i> Karnal &nbsp;•&nbsp; Yesterday</span>
+                    </div>
+                </div>
+                <span class="post-tag success">Success</span>
+                <h3>Sold 200 quintals of rice directly using AgroTrack marketplace</h3>
+                <p>Skipped the mandi entirely and connected directly with a buyer from Delhi. Got a 15% better rate than local markets!</p>
+                <div class="post-stats-row">
+                    <div class="stat-item"><i class="fa-solid fa-thumbs-up"></i> 210</div>
+                    <div class="stat-item"><i class="fa-solid fa-comment"></i> 45</div>
+                    <a href="#" class="read-more">Read More &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Feed Card 4 -->
+            <div class="feed-card">
+                <div class="post-author">
+                    <div class="author-avatar" style="background-color: #1a4a2e;">AT</div>
+                    <div class="author-meta">
+                        <h4>AgroTrack Team</h4>
+                        <span><i class="fa-solid fa-shield-halved text-green"></i> Official &nbsp;•&nbsp; 1 day ago</span>
+                    </div>
+                </div>
+                <span class="post-tag schemes">Schemes</span>
+                <h3>PM-KISAN new installment released — how to check status</h3>
+                <p>The latest installment of PM-KISAN has been processed. Here is a quick guide on how to verify if it has hit your account.</p>
+                <div class="post-stats-row">
+                    <div class="stat-item"><i class="fa-solid fa-thumbs-up"></i> 542</div>
+                    <div class="stat-item"><i class="fa-solid fa-comment"></i> 89</div>
+                    <a href="#" class="read-more">Read More &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Feed Card 5 -->
+            <div class="feed-card">
+                <div class="post-author">
+                    <div class="author-avatar" style="background-color: #ef4444;">VK</div>
+                    <div class="author-meta">
+                        <h4>Vikram Kumar</h4>
+                        <span><i class="fa-solid fa-location-dot"></i> Muzaffarnagar &nbsp;•&nbsp; 2 days ago</span>
+                    </div>
+                </div>
+                <span class="post-tag pest">Pest</span>
+                <h3>Early signs of stem borer in sugarcane — share experience</h3>
+                <p>Used the pest alert camera, it flagged stem borers. What chemical spray works best for early mitigation?</p>
+                <div class="post-stats-row">
+                    <div class="stat-item"><i class="fa-solid fa-thumbs-up"></i> 89</div>
+                    <div class="stat-item"><i class="fa-solid fa-comment"></i> 34</div>
+                    <a href="#" class="read-more">Read More &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Feed Card 6 -->
+            <div class="feed-card">
+                <div class="post-author">
+                    <div class="author-avatar" style="background-color: #f59e0b;">AN</div>
+                    <div class="author-meta">
+                        <h4>AgroTrack News</h4>
+                        <span><i class="fa-solid fa-newspaper text-green"></i> News Desk &nbsp;•&nbsp; 3 days ago</span>
+                    </div>
+                </div>
+                <span class="post-tag news">Market</span>
+                <h3>Wheat prices expected to rise this December — expert analysis</h3>
+                <p>Global supply chain shifts hint at a 4-7% increase in wheat rates domestically hitting markets in late December...</p>
+                <div class="post-stats-row">
+                    <div class="stat-item"><i class="fa-solid fa-thumbs-up"></i> 320</div>
+                    <div class="stat-item"><i class="fa-solid fa-comment"></i> 112</div>
+                    <a href="#" class="read-more">Read More &rarr;</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Post Form -->
+    <section class="post-form-section">
+        <div class="container scroll-animate fade-up">
+            <div class="section-title text-center">
+                <h2>Have something to share?</h2>
+                <p>Write a post, ask a question, or share an update with the community.</p>
+            </div>
+            
+            <div class="community-form-card mt-4">
+                <form action="#" method="POST">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Your Name *</label>
+                            <input type="text" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Location *</label>
+                            <input type="text" placeholder="District, State" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select required>
+                            <option value="" disabled selected>Select a category</option>
+                            <option value="tips">Tips & Tricks</option>
+                            <option value="qa">Question & Answer</option>
+                            <option value="success">Success Story</option>
+                            <option value="news">Market News</option>
+                            <option value="pest">Pest Report</option>
+                            <option value="schemes">Government Scheme</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Post Title *</label>
+                        <input type="text" placeholder="Give your post a clear, descriptive title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Your Message *</label>
+                        <textarea placeholder="Write your content here..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tags</label>
+                        <input type="text" placeholder="e.g. wheat, fertilizer, pest control (comma separated)" required>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="cta-btn primary-cta">Post to Community</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Contributors -->
+    <section class="top-contributors bg-white">
+        <div class="container scroll-animate fade-up">
+            <div class="section-title text-center">
+                <h2>Top Community Contributors</h2>
+                <p>Our most helpful farmers sharing knowledge every day.</p>
+            </div>
+
+            <div class="contributors-row mt-4">
+                <div class="contributor-card">
+                    <div class="author-avatar" style="background-color: #1a4a2e;">RS</div>
+                    <h4>Rajveer Singh</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">Ludhiana</p>
+                    <div class="contributor-badge">🏆 Top Contributor</div>
+                    <div class="contributor-posts">42 posts • 890 helpful votes</div>
+                </div>
+
+                <div class="contributor-card">
+                    <div class="author-avatar" style="background-color: #4caf7d;">SD</div>
+                    <h4>Sunita Devi</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">Varanasi</p>
+                    <div class="contributor-badge">✅ Verified Farmer</div>
+                    <div class="contributor-posts">38 posts • 645 helpful votes</div>
+                </div>
+
+                <div class="contributor-card">
+                    <div class="author-avatar" style="background-color: #f59e0b;">HK</div>
+                    <h4>Harpreet Kaur</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">Amritsar</p>
+                    <div class="contributor-badge">🌟 Expert</div>
+                    <div class="contributor-posts">31 posts • 922 helpful votes</div>
+                </div>
+
+                <div class="contributor-card">
+                    <div class="author-avatar" style="background-color: #3b82f6;">MY</div>
+                    <h4>Mohan Yadav</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">Agra</p>
+                    <div class="contributor-badge">✅ Verified Farmer</div>
+                    <div class="contributor-posts">28 posts • 410 helpful votes</div>
+                </div>
+
+                <div class="contributor-card">
+                    <div class="author-avatar" style="background-color: #ef4444;">VK</div>
+                    <h4>Vikram Kumar</h4>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">Muzaffarnagar</p>
+                    <div class="contributor-badge">🏆 Top Contributor</div>
+                    <div class="contributor-posts">25 posts • 530 helpful votes</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog-teaser container">
+        <div class="section-title text-center scroll-animate fade-up">
+            <h2>Latest Editorials & Blogs</h2>
+            <p>In-depth agricultural reads curated by our team.</p>
+        </div>
+
+        <div class="blog-grid mt-4 scroll-animate fade-up">
+            <div class="blog-card">
+                <div class="blog-thumb" style="background-color: #ddd;"></div>
+                <div class="blog-content">
+                    <span class="blog-tag">Agronomy</span>
+                    <h3>Preparing soil for the Rabi season</h3>
+                    <p class="read-time"><i class="fa-regular fa-clock"></i> 5 min read</p>
+                    <a href="#" class="link-btn mt-2 inline-block">Read Article &rarr;</a>
+                </div>
+            </div>
+            <div class="blog-card">
+                <div class="blog-thumb" style="background-color: #ddd;"></div>
+                <div class="blog-content">
+                    <span class="blog-tag">Technology</span>
+                    <h3>How drones are changing Indian farming</h3>
+                    <p class="read-time"><i class="fa-regular fa-clock"></i> 8 min read</p>
+                    <a href="#" class="link-btn mt-2 inline-block">Read Article &rarr;</a>
+                </div>
+            </div>
+            <div class="blog-card">
+                <div class="blog-thumb" style="background-color: #ddd;"></div>
+                <div class="blog-content">
+                    <span class="blog-tag">Economics</span>
+                    <h3>Understanding MSP and how it affects you</h3>
+                    <p class="read-time"><i class="fa-regular fa-clock"></i> 6 min read</p>
+                    <a href="#" class="link-btn mt-2 inline-block">Read Article &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Government Schemes Banner -->
+    <div class="container scroll-animate fade-up">
+        <div class="schemes-banner">
+            <h2>Latest Government Schemes for Farmers 🇮🇳</h2>
+            <p style="max-width: 600px; margin-bottom: 1rem;">Stay updated with central and state initiatives designed to provide financial independence and technical assistance.</p>
+            
+            <div class="schemes-grid">
+                <div class="scheme-card">
+                    <h4>PM-KISAN</h4>
+                    <p>₹6,000/year direct benefit transfer in 3 equal installments purely for active farmers.</p>
+                </div>
+                <div class="scheme-card">
+                    <h4>Fasal Bima Yojana</h4>
+                    <p>Comprehensive crop insurance securing against natural calamities at extremely low premium rates.</p>
+                </div>
+                <div class="scheme-card">
+                    <h4>Soil Health Card Scheme</h4>
+                    <p>Free field-wise soil testing specifying precise nutrient deficiencies to reduce input costs.</p>
+                </div>
+            </div>
+            
+            <a href="#" class="cta-btn secondary-cta" style="background: white; color: var(--primary-green);">View All Schemes</a>
+        </div>
+    </div>
+
+    <!-- Newsletter -->
+    <section class="newsletter bg-light-green text-center">
+        <div class="container scroll-animate fade-up">
+            <h2>Get weekly farming tips in your inbox</h2>
+            <p>Join our newsletter and never miss an important community update.</p>
+            <form class="newsletter-form mt-4" action="/subscribe" method="POST">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit" class="cta-btn dark-cta">Subscribe</button>
+            </form>
+            <p class="privacy-note mt-2">We care about your data. Read our <a href="/privacy">Privacy Policy</a>.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <a href="#" class="logo text-white">
+                    <i class="fa-solid fa-leaf text-green"></i> AgroTrack
+                </a>
+                <p class="text-gray mt-2">The future of farming, today. Smart analytics and tracking for modern
+                    agriculture.</p>
+                <div class="social-links mt-4">
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="/features/dashboard">Dashboard</a></li>
+                    <li><a href="/features/mapping">Field Mapping</a></li>
+                    <li><a href="/features/pest-control">Pest Protection</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="community.html">Blog</a></li>
+                    <li><a href="/guides">Farming Guides</a></li>
+                    <li><a href="/help">Help Center</a></li>
+                    <li><a href="/api">API Documentation</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/careers">Careers</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container footer-bottom">
+            <p>&copy; 2026 AgroTrack Inc. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="/terms">Terms</a>
+                <a href="/privacy">Privacy</a>
+                <div class="language-select">
+                    <i class="fa-solid fa-globe"></i> English
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

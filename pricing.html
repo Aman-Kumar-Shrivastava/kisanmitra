@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing & Crop Marketplace | AgroTrack</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* pricing.css - Styles specifically for the Pricing & Marketplace page */
+
+        .market-hero {
+            background-color: var(--primary-green);
+            color: var(--text-white);
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .market-hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(82, 183, 136, 0.2) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .market-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-family: var(--font-heading);
+        }
+
+        .market-hero .subtitle {
+            font-size: 1.2rem;
+            color: var(--light-green);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.5;
+        }
+
+        .hero-tags {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-tag {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            backdrop-filter: blur(5px);
+            color: var(--text-white);
+        }
+
+        .hero-tag i {
+            color: var(--accent-green);
+        }
+
+        /* Ticker Strip */
+        .ticker-wrap {
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            overflow: hidden;
+            padding: 1.2rem 0;
+            border-bottom: 2px solid var(--accent-green);
+            border-top: 2px solid var(--accent-green);
+            white-space: nowrap;
+        }
+
+        .ticker {
+            display: inline-block;
+            white-space: nowrap;
+            padding-left: 100%;
+            animation: ticker 30s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .ticker-item {
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-right: 3rem;
+        }
+
+        .ticker-item .rate {
+            font-weight: bold;
+            color: var(--text-white);
+        }
+
+        .text-warning-color {
+            color: var(--warning-color);
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            padding: 2rem 0;
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #dcdcdc;
+            color: var(--text-main);
+            padding: 0.6rem 1.4rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-family: var(--font-body);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: var(--primary-green);
+            color: var(--text-white);
+            border-color: var(--primary-green);
+        }
+
+        /* Grid layout */
+        .marketplace-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        .listing-card {
+            background-color: var(--bg-white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            padding: 1.8rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .listing-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+        }
+
+        .listing-card.selling {
+            border-top: 5px solid var(--accent-green);
+        }
+
+        .listing-card.buying {
+            border-top: 5px solid var(--earth-warm);
+        }
+
+        .listing-tag {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .listing-card.selling .listing-tag {
+            background-color: var(--accent-green);
+        }
+
+        .listing-card.buying .listing-tag {
+            background-color: var(--earth-warm);
+        }
+
+        .listing-title {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            margin-bottom: 0.2rem;
+            padding-top: 0.5rem;
+            color: var(--primary-green);
+        }
+
+        .listing-qty {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .listing-price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+        }
+
+        .listing-meta {
+            margin-top: auto;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 1rem;
+        }
+
+        .listing-meta i {
+            width: 20px;
+            text-align: center;
+            color: var(--primary-green);
+            margin-right: 5px;
+        }
+
+        /* Post Listing Form */
+        .post-listing-section {
+            padding: 5rem 0;
+            background-color: var(--bg-light);
+        }
+
+        .post-form-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: var(--shadow-md);
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media(max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.2);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            height: 100%;
+            margin-top: 10px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"] {
+            width: auto;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        /* FAQs */
+        .faq-section {
+            padding: 5rem 0;
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            margin-bottom: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--bg-white);
+            transition: var(--transition);
+        }
+
+        .faq-item:hover {
+            box-shadow: var(--shadow-sm);
+            border-color: #dcdcdc;
+        }
+
+        .faq-item summary {
+            padding: 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            list-style: none;
+            /* Hide default arrow */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            color: var(--primary-green);
+        }
+
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+            /* Hide default arrow for webkit */
+        }
+
+        .faq-item summary::after {
+            content: '\f078';
+            /* fa-chevron-down */
+            font-family: 'FontAwesome';
+            color: var(--accent-green);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item[open] summary::after {
+            transform: rotate(180deg);
+        }
+
+        .faq-item p {
+            padding: 0 1.5rem 1.5rem;
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-leaf"></i> AgroTrack
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="index.html#features">Features <i class="fa-solid fa-chevron-down"
+                            style="font-size: 0.8rem; margin-left: 4px;"></i></a>
+                    <ul class="nav-dropdown">
+                        <li><a href="index.html#fields"><i class="fa-solid fa-map icon-left"></i> My Fields</a></li>
+                        <li><a href="index.html#tracker"><i class="fa-solid fa-leaf icon-left"></i> Crop Tracker</a>
+                        </li>
+                        <li><a href="pest_alert.html"><i class="fa-solid fa-bug icon-left"></i> Pest Alerts</a></li>
+                        <li><a href="crop_report.html"><i class="fa-solid fa-chart-line icon-left"></i> Reports</a></li>
+                        <li><a href="index.html#weather"><i class="fa-solid fa-cloud-sun icon-left"></i> Weather</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="market.html">Market</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="/register" class="cta-btn sm">Get Started Free</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="market-hero scroll-animate fade-up">
+        <div class="container">
+            <span class="hero-tag mb-4"><i class="fa-solid fa-tower-broadcast"></i> Live Market</span>
+            <h1>Crop Marketplace & Pricing</h1>
+            <p class="subtitle">Buy and sell crops at live market rates. No middlemen, direct farmer-to-farmer trade.
+            </p>
+            <div class="hero-tags mt-4">
+                <div class="hero-tag">
+                    <i class="fa-solid fa-circle text-green" style="font-size: 0.6rem;"></i> 142 Active Listings
+                </div>
+                <div class="hero-tag">
+                    <i class="fa-solid fa-circle text-green" style="font-size: 0.6rem;"></i> 89 Farmers Trading Today
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Market Rates Strip -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item">🌾 Sugarcane: <span class="rate">₹350/quintal</span> <span class="text-green"><i
+                        class="fa-solid fa-arrow-trend-up"></i> +2%</span></div>
+            <div class="ticker-item">🌾 Wheat: <span class="rate">₹2,200/quintal</span> <span
+                    class="text-warning-color"><i class="fa-solid fa-arrow-trend-down"></i> -1%</span></div>
+            <div class="ticker-item">🌾 Rice: <span class="rate">₹1,950/quintal</span> <span class="text-green"><i
+                        class="fa-solid fa-arrow-trend-up"></i> +3%</span></div>
+            <div class="ticker-item">🌽 Corn: <span class="rate">₹1,400/quintal</span> <span class="text-yellow"><i
+                        class="fa-solid fa-minus"></i> 0%</span></div>
+            <div class="ticker-item">🌱 Soybean: <span class="rate">₹4,100/quintal</span> <span class="text-green"><i
+                        class="fa-solid fa-arrow-trend-up"></i> +5%</span></div>
+            <div class="ticker-item">☁️ Cotton: <span class="rate">₹6,500/quintal</span> <span
+                    class="text-warning-color"><i class="fa-solid fa-arrow-trend-down"></i> -2%</span></div>
+            <div class="ticker-item">🌾 Sugarcane: <span class="rate">₹350/quintal</span> <span class="text-green"><i
+                        class="fa-solid fa-arrow-trend-up"></i> +2%</span></div>
+            <div class="ticker-item">🌾 Wheat: <span class="rate">₹2,200/quintal</span> <span
+                    class="text-warning-color"><i class="fa-solid fa-arrow-trend-down"></i> -1%</span></div>
+            <div class="ticker-item">🌾 Rice: <span class="rate">₹1,950/quintal</span> <span class="text-green"><i
+                        class="fa-solid fa-arrow-trend-up"></i> +3%</span></div>
+            <div class="ticker-item">🌽 Corn: <span class="rate">₹1,400/quintal</span> <span class="text-yellow"><i
+                        class="fa-solid fa-minus"></i> 0%</span></div>
+            <div class="ticker-item">🌱 Soybean: <span class="rate">₹4,100/quintal</span> <span class="text-green"><i
+                        class="fa-solid fa-arrow-trend-up"></i> +5%</span></div>
+            <div class="ticker-item">☁️ Cotton: <span class="rate">₹6,500/quintal</span> <span
+                    class="text-warning-color"><i class="fa-solid fa-arrow-trend-down"></i> -2%</span></div>
+        </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="container scroll-animate fade-up mt-4">
+        <div class="filter-bar">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Buying</button>
+            <button class="filter-btn">Selling</button>
+            <button class="filter-btn">Wheat</button>
+            <button class="filter-btn">Rice</button>
+            <button class="filter-btn">Sugarcane</button>
+            <button class="filter-btn">Vegetables</button>
+            <button class="filter-btn">Fruits</button>
+        </div>
+    </div>
+
+    <!-- Crop Listings Grid -->
+    <section class="container scroll-animate fade-up">
+        <div class="marketplace-grid">
+            <!-- Card 1 -->
+            <div class="listing-card selling">
+                <div class="listing-tag">SELLING</div>
+                <h3 class="listing-title">Wheat - Sharbati</h3>
+                <div class="listing-qty">80 quintals available</div>
+                <div class="listing-price">₹2,150<span
+                        style="font-size: 1rem; font-weight: normal; color: var(--text-muted)">/q</span></div>
+                <div class="listing-meta">
+                    <i class="fa-solid fa-user"></i> Rajveer Singh<br>
+                    <i class="fa-solid fa-location-dot"></i> Ludhiana<br>
+                    <i class="fa-regular fa-clock"></i> Posted Today
+                </div>
+                <button class="cta-btn primary-cta full-width">Contact Seller</button>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="listing-card buying">
+                <div class="listing-tag">BUYING</div>
+                <h3 class="listing-title">Rice - Basmati</h3>
+                <div class="listing-qty">200 quintals needed</div>
+                <div class="listing-price">₹1,900<span
+                        style="font-size: 1rem; font-weight: normal; color: var(--text-muted)">/q</span></div>
+                <div class="listing-meta">
+                    <i class="fa-solid fa-building"></i> Mohan Farms<br>
+                    <i class="fa-solid fa-location-dot"></i> Karnal<br>
+                    <i class="fa-regular fa-clock"></i> Posted 2 hrs ago
+                </div>
+                <button class="cta-btn outlined full-width"
+                    style="border-color: var(--earth-warm); color: var(--earth-warm)">Contact Buyer</button>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="listing-card selling">
+                <div class="listing-tag">SELLING</div>
+                <h3 class="listing-title">Sugarcane - Hybrid</h3>
+                <div class="listing-qty">150 quintals available</div>
+                <div class="listing-price">₹340<span
+                        style="font-size: 1rem; font-weight: normal; color: var(--text-muted)">/q</span></div>
+                <div class="listing-meta">
+                    <i class="fa-solid fa-user"></i> Vikram Kumar<br>
+                    <i class="fa-solid fa-location-dot"></i> Muzaffarnagar<br>
+                    <i class="fa-regular fa-clock"></i> Posted Yesterday
+                </div>
+                <button class="cta-btn primary-cta full-width">Contact Seller</button>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="listing-card selling">
+                <div class="listing-tag">SELLING</div>
+                <h3 class="listing-title">Corn - Sweet</h3>
+                <div class="listing-qty">60 quintals available</div>
+                <div class="listing-price">₹1,380<span
+                        style="font-size: 1rem; font-weight: normal; color: var(--text-muted)">/q</span></div>
+                <div class="listing-meta">
+                    <i class="fa-solid fa-user"></i> Suresh Yadav<br>
+                    <i class="fa-solid fa-location-dot"></i> Agra<br>
+                    <i class="fa-regular fa-clock"></i> Posted 3 days ago
+                </div>
+                <button class="cta-btn primary-cta full-width">Contact Seller</button>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="listing-card buying">
+                <div class="listing-tag">BUYING</div>
+                <h3 class="listing-title">Soybean - Premium</h3>
+                <div class="listing-qty">100 quintals needed</div>
+                <div class="listing-price">₹4,050<span
+                        style="font-size: 1rem; font-weight: normal; color: var(--text-muted)">/q</span></div>
+                <div class="listing-meta">
+                    <i class="fa-solid fa-building"></i> AgroMart Ltd<br>
+                    <i class="fa-solid fa-location-dot"></i> Indore<br>
+                    <i class="fa-regular fa-clock"></i> Posted Today
+                </div>
+                <button class="cta-btn outlined full-width"
+                    style="border-color: var(--earth-warm); color: var(--earth-warm)">Contact Buyer</button>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="listing-card selling">
+                <div class="listing-tag">SELLING</div>
+                <h3 class="listing-title">Cotton - BT </h3>
+                <div class="listing-qty">40 quintals available</div>
+                <div class="listing-price">₹6,400<span
+                        style="font-size: 1rem; font-weight: normal; color: var(--text-muted)">/q</span></div>
+                <div class="listing-meta">
+                    <i class="fa-solid fa-user"></i> Harbhajan Singh<br>
+                    <i class="fa-solid fa-location-dot"></i> Amritsar<br>
+                    <i class="fa-regular fa-clock"></i> Posted 12 hrs ago
+                </div>
+                <button class="cta-btn primary-cta full-width">Contact Seller</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Post a Listing Form -->
+    <section class="post-listing-section">
+        <div class="container scroll-animate fade-up">
+            <div class="section-title text-center">
+                <h2>Post Your Own Listing</h2>
+                <p>Join the marketplace in under a minute.</p>
+            </div>
+
+            <div class="post-form-card mt-4">
+                <form action="#" method="POST" id="listing-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Listing Type *</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="listing_type" value="sell" required checked>
+                                    Selling</label>
+                                <label><input type="radio" name="listing_type" value="buy" required> Buying</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Crop Name *</label>
+                            <select required>
+                                <option value="" disabled selected>Select Crop</option>
+                                <option value="Wheat">Wheat</option>
+                                <option value="Rice">Rice</option>
+                                <option value="Sugarcane">Sugarcane</option>
+                                <option value="Corn">Corn</option>
+                                <option value="Soybean">Soybean</option>
+                                <option value="Cotton">Cotton</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Variety</label>
+                            <input type="text" placeholder="e.g. Basmati, Sharbati">
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity *</label>
+                            <div style="display: flex; gap: 0.5rem">
+                                <input type="number" placeholder="Enter amount" required style="flex: 2">
+                                <select required style="flex: 1">
+                                    <option value="quintals" selected>Quintals</option>
+                                    <option value="kg">kg</option>
+                                    <option value="tonnes">Tonnes</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Price per Unit (₹) *</label>
+                            <input type="number" placeholder="e.g. 2100" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Name/Company *</label>
+                            <input type="text" placeholder="Enter full name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Contact Number *</label>
+                            <input type="tel" placeholder="+91 XXXXX XXXXX" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Location (District, State) *</label>
+                            <input type="text" placeholder="e.g. Karnal, Haryana" required>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="cta-btn primary-cta" style="min-width: 200px;">Post
+                            Listing</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subscription Plans Section -->
+    <section class="pricing bg-white" id="pricing" style="padding: 5rem 0;">
+        <div class="container">
+            <div class="section-title text-center scroll-animate fade-up">
+                <h2>Subscription Plans</h2>
+                <p>Pro and Enterprise members get priority listing placement and direct buyer/seller matching.</p>
+            </div>
+
+            <div class="pricing-grid mt-4">
+                <div class="price-card scroll-animate fade-up">
+                    <div class="plan-name">Starter</div>
+                    <div class="price">Free<span>/mo</span></div>
+                    <p class="plan-desc">Perfect for small plots or hobbyists to get started.</p>
+                    <ul class="plan-features">
+                        <li><i class="fa-solid fa-check"></i> Standard Listings</li>
+                        <li><i class="fa-solid fa-check"></i> Community Access</li>
+                        <li><i class="fa-solid fa-check"></i> Basic Market Views</li>
+                        <li class="disabled"><i class="fa-solid fa-xmark"></i> Direct Matching</li>
+                    </ul>
+                    <a href="pricing.html" class="cta-btn secondary-cta full-width">Start Free</a>
+                </div>
+
+                <div class="price-card popular glass dark-glass scroll-animate fade-up" style="transition-delay: 0.1s">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="plan-name">Pro Grower</div>
+                    <div class="price">₹499<span>/mo</span></div>
+                    <p class="plan-desc">For serious farmers demanding data-driven results.</p>
+                    <ul class="plan-features">
+                        <li><i class="fa-solid fa-check"></i> Priority Placements</li>
+                        <li><i class="fa-solid fa-check"></i> Direct Matching</li>
+                        <li><i class="fa-solid fa-check"></i> Live Price Alerts</li>
+                        <li><i class="fa-solid fa-check"></i> Buyer Negotiation</li>
+                    </ul>
+                    <a href="pricing.html" class="cta-btn primary-cta full-width">Get Pro</a>
+                </div>
+
+                <div class="price-card scroll-animate fade-up" style="transition-delay: 0.2s">
+                    <div class="plan-name">Enterprise</div>
+                    <div class="price">Custom</div>
+                    <p class="plan-desc">Custom implementations for massive scale operations.</p>
+                    <ul class="plan-features">
+                        <li><i class="fa-solid fa-check"></i> Wholesale Trading</li>
+                        <li><i class="fa-solid fa-check"></i> API Access</li>
+                        <li><i class="fa-solid fa-check"></i> Logistics Partners</li>
+                        <li><i class="fa-solid fa-check"></i> Dedicated Manager</li>
+                    </ul>
+                    <a href="pricing.html" class="cta-btn outlined full-width">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Strip -->
+    <section class="faq-section bg-light">
+        <div class="container scroll-animate fade-up">
+            <div class="section-title text-center">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list mt-4">
+                <details class="faq-item">
+                    <summary>How do I post a listing?</summary>
+                    <p>Simply use the "Post Your Own Listing" form above. Select whether you are buying or selling,
+                        enter the crop details, your price expectations, and location. Once submitted, your listing will
+                        appear on the live board instantly.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Is there a commission on trades?</summary>
+                    <p>No, AgroTrack acts strictly as a marketplace connector. There are zero commissions on trades. You
+                        coordinate delivery and payment directly with the buyer/seller.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>How do I contact a buyer/seller?</summary>
+                    <p>Click the "Contact Buyer" or "Contact Seller" button on their listing. If you are a free user,
+                        you will get their phone number or email to contact. Pro users get integrated in-app messaging
+                        and negotiation tools.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- 15. Footer -->
+    <footer class="footer bg-dark">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <a href="#" class="logo text-white">
+                    <i class="fa-solid fa-leaf text-green"></i> AgroTrack
+                </a>
+                <p class="text-gray mt-2">The future of farming, today. Smart analytics and tracking for modern
+                    agriculture.</p>
+                <div class="social-links mt-4">
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="/features/dashboard">Dashboard</a></li>
+                    <li><a href="/features/mapping">Field Mapping</a></li>
+                    <li><a href="/features/pest-control">Pest Protection</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="community.html">Blog</a></li>
+                    <li><a href="/guides">Farming Guides</a></li>
+                    <li><a href="/help">Help Center</a></li>
+                    <li><a href="/api">API Documentation</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/careers">Careers</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="container footer-bottom">
+            <p>&copy; 2026 AgroTrack Inc. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="/terms">Terms</a>
+                <a href="/privacy">Privacy</a>
+                <div class="language-select">
+                    <i class="fa-solid fa-globe"></i> English
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
