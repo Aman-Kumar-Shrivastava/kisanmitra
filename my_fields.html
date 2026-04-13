@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Fields | AgroTrack</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* my_fields.css - Custom Styling */
+        :root {
+            --hero-bg: #1a4a2e;
+            --accent-teal: #1abc9c;
+        }
+
+        body {
+            background-color: #f4f6f0;
+        }
+
+        /* Hero */
+        .fields-hero {
+            background-color: var(--hero-bg);
+            color: white;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+        .fields-hero::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at center, rgba(76, 175, 125, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-title { font-family: var(--font-heading); font-size: 3rem; margin-bottom: 0.5rem; }
+        .hero-subtitle { font-size: 1.1rem; color: #e1e8e3; margin-bottom: 2rem; }
+        
+        .hero-stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .hero-tag {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            font-weight: 500;
+        }
+
+        /* Farmer Info Strip */
+        .farmer-info-strip {
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 70px;
+            z-index: 100;
+        }
+        .farmer-info-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .farmer-info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .farmer-info-item i { color: var(--primary-green); }
+        .farmer-info-item strong { color: var(--text-main); }
+
+        /* Summary Stats Bar */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .stat-box {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--primary-green);
+        }
+        .stat-box h4 { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .stat-box .value { font-size: 1.8rem; font-weight: 800; color: var(--text-main); }
+
+        /* Main Content Layout */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        @media(max-width: 900px) {
+            .layout-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Left Panel */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .field-card-selected {
+            background: var(--accent-teal);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        .field-card-selected::before {
+            content: "\f024"; /* flag */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: -10px;
+            bottom: -20px;
+            font-size: 6rem;
+            opacity: 0.1;
+        }
+        .field-card-selected h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .field-card-selected p { margin-bottom: 1rem; opacity: 0.9; }
+
+        .fields-list-minimal {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .fields-list-minimal .list-item {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .fields-list-minimal .list-item:hover { background: #f8fafc; }
+        .fields-list-minimal .list-item.active { border-left: 4px solid var(--accent-teal); background: #f0fdfa; }
+
+        /* Map Container */
+        .map-container {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            height: 500px;
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        #field-map {
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+
+        /* Fields List Grid */
+        .fields-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+        .field-full-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        .field-full-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        .field-full-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        .badge {
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .badge.active { background: #dcfce7; color: #16a34a; }
+        .badge.inactive { background: #f1f5f9; color: #64748b; }
+        
+        .field-details-list {
+            list-style: none;
+            padding: 0; margin: 0 0 1.5rem 0;
+            font-size: 0.95rem;
+        }
+        .field-details-list li {
+            margin-bottom: 0.5rem;
+            display: flex; 
+            gap: 0.5rem;
+            color: var(--text-muted);
+        }
+        .field-details-list i { color: var(--primary-green); width: 20px; }
+        
+        .card-actions {
+            display: flex;
+            gap: 1rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding-top: 1rem;
+        }
+        .card-actions button {
+            flex: 1;
+            padding: 0.6rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-view {
+            background: #f0fdfa;
+            color: var(--accent-teal);
+            border: 1px solid var(--accent-teal);
+        }
+        .btn-view:hover { background: var(--accent-teal); color: white; }
+        .btn-edit {
+            background: white;
+            color: var(--text-muted);
+            border: 1px solid #cbd5e1;
+        }
+        .btn-edit:hover { background: #f1f5f9; }
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-leaf"></i> AgroTrack
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="index.html#features" class="active">Features <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: 4px;"></i></a>
+                    <ul class="nav-dropdown">
+                        <li><a href="my_fields.html" class="active"><i class="fa-solid fa-map icon-left"></i> My Fields</a></li>
+                        <li><a href="crop_tracker.html"><i class="fa-solid fa-leaf icon-left"></i> Crop Tracker</a></li>
+                        <li><a href="pest_alert.html"><i class="fa-solid fa-bug icon-left"></i> Pest Alerts</a></li>
+                        <li><a href="crop_report.html"><i class="fa-solid fa-chart-line icon-left"></i> Reports</a></li>
+                        <li><a href="weather.html"><i class="fa-solid fa-cloud-sun icon-left"></i> Weather</a></li>
+                    </ul>
+                </li>
+                <li><a href="market.html">Market</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="/register" class="cta-btn sm">Get Started Free</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="fields-hero">
+        <div class="container relative" style="z-index: 1;">
+            <div class="hero-tag mb-3 d-inline-block"><i class="fa-solid fa-satellite"></i> Satellite View</div>
+            <h1 class="hero-title">My Fields</h1>
+            <p class="hero-subtitle">View and manage all your registered agricultural fields</p>
+            <div class="hero-stats-row">
+                <div class="hero-tag">🟢 4 Fields</div>
+                <div class="hero-tag">🟢 1.16 Bgl Total</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Farmer Info Strip -->
+    <div class="farmer-info-strip">
+        <div class="container farmer-info-content">
+            <div class="farmer-info-item">
+                <i class="fa-solid fa-user"></i>
+                <span>Farmer: <strong>Faltu</strong></span>
+            </div>
+            <div class="farmer-info-item">
+                <i class="fa-solid fa-phone"></i>
+                <span>Mobile: <strong>+91 XXXXXXXXXX</strong></span>
+            </div>
+            <div class="farmer-info-item">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Location: <strong>Pincode 243611, Uttar Pradesh</strong></span>
+            </div>
+            <div class="farmer-info-item">
+                <i class="fa-solid fa-tractor"></i>
+                <span>Method: <strong>Manual Tracking</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Summary Stats Bar -->
+        <div class="stats-grid">
+            <div class="stat-box">
+                <h4>Total Fields</h4>
+                <div class="value">4</div>
+            </div>
+            <div class="stat-box">
+                <h4>Total Area</h4>
+                <div class="value">1.16 <span style="font-size: 1rem; color: #64748b;">Bgl</span></div>
+            </div>
+            <div class="stat-box" style="border-left-color: #1abc9c">
+                <h4>Active Fields</h4>
+                <div class="value">3</div>
+            </div>
+            <div class="stat-box" style="border-left-color: #94a3b8">
+                <h4>Inactive</h4>
+                <div class="value">1</div>
+            </div>
+        </div>
+
+        <!-- Layout Grid: Panel + Map -->
+        <div class="layout-grid">
+            <div class="left-panel">
+                <div class="field-card-selected">
+                    <h3 id="panel-field-name">KB-170</h3>
+                    <p><i class="fa-solid fa-chart-area"></i> Area: <span id="panel-field-area">0.22 Bgl</span></p>
+                    <a href="crop_tracker.html" class="cta-btn sm" style="background: white; color: var(--accent-teal);">Track Crop</a>
+                </div>
+                
+                <div class="fields-list-minimal">
+                    <div class="list-item active" onclick="focusField(0)">
+                        <span><strong>KB-170</strong><br><small style="color:#64748b">Sugarcane</small></span>
+                        <span>0.22 Bgl</span>
+                    </div>
+                    <div class="list-item" onclick="focusField(1)">
+                        <span><strong>KB-171</strong><br><small style="color:#64748b">Wheat</small></span>
+                        <span>0.35 Bgl</span>
+                    </div>
+                    <div class="list-item" onclick="focusField(2)">
+                        <span><strong>KB-172</strong><br><small style="color:#64748b">Rice</small></span>
+                        <span>0.18 Bgl</span>
+                    </div>
+                    <div class="list-item" onclick="focusField(3)">
+                        <span><strong>KB-173</strong><br><small style="color:#64748b">Vegetables</small></span>
+                        <span>0.41 Bgl</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-container">
+                <div id="field-map"></div>
+            </div>
+        </div>
+
+        <h3 class="mb-3">All Registered Fields</h3>
+        
+        <!-- Fields List Grid -->
+        <div class="fields-grid">
+            <!-- Field 1 -->
+            <div class="field-full-card">
+                <div class="card-header">
+                    <h3 style="margin: 0; font-size: 1.2rem;">KB-170</h3>
+                    <span class="badge active">Active</span>
+                </div>
+                <ul class="field-details-list">
+                    <li><i class="fa-solid fa-chart-area"></i> <strong>0.22 Bgl</strong></li>
+                    <li><i class="fa-solid fa-seedling"></i> Sugarcane</li>
+                    <li><i class="fa-solid fa-location-crosshairs"></i> 28.4089° N, 79.1234° E</li>
+                </ul>
+                <div class="card-actions">
+                    <button class="btn-view" onclick="focusField(0)"><i class="fa-solid fa-map-location-dot"></i> View on Map</button>
+                    <button class="btn-edit"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+                </div>
+            </div>
+
+            <!-- Field 2 -->
+            <div class="field-full-card">
+                <div class="card-header">
+                    <h3 style="margin: 0; font-size: 1.2rem;">KB-171</h3>
+                    <span class="badge active">Active</span>
+                </div>
+                <ul class="field-details-list">
+                    <li><i class="fa-solid fa-chart-area"></i> <strong>0.35 Bgl</strong></li>
+                    <li><i class="fa-solid fa-seedling"></i> Wheat</li>
+                    <li><i class="fa-solid fa-location-crosshairs"></i> 28.4112° N, 79.1265° E</li>
+                </ul>
+                <div class="card-actions">
+                    <button class="btn-view" onclick="focusField(1)"><i class="fa-solid fa-map-location-dot"></i> View on Map</button>
+                    <button class="btn-edit"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+                </div>
+            </div>
+
+            <!-- Field 3 -->
+            <div class="field-full-card">
+                <div class="card-header">
+                    <h3 style="margin: 0; font-size: 1.2rem;">KB-172</h3>
+                    <span class="badge active">Active</span>
+                </div>
+                <ul class="field-details-list">
+                    <li><i class="fa-solid fa-chart-area"></i> <strong>0.18 Bgl</strong></li>
+                    <li><i class="fa-solid fa-seedling"></i> Rice</li>
+                    <li><i class="fa-solid fa-location-crosshairs"></i> 28.4075° N, 79.1210° E</li>
+                </ul>
+                <div class="card-actions">
+                    <button class="btn-view" onclick="focusField(2)"><i class="fa-solid fa-map-location-dot"></i> View on Map</button>
+                    <button class="btn-edit"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+                </div>
+            </div>
+
+            <!-- Field 4 -->
+            <div class="field-full-card" style="opacity: 0.8;">
+                <div class="card-header">
+                    <h3 style="margin: 0; font-size: 1.2rem;">KB-173</h3>
+                    <span class="badge inactive">Inactive</span>
+                </div>
+                <ul class="field-details-list">
+                    <li><i class="fa-solid fa-chart-area"></i> <strong>0.41 Bgl</strong></li>
+                    <li><i class="fa-solid fa-seedling"></i> Vegetables (Fallow)</li>
+                    <li><i class="fa-solid fa-location-crosshairs"></i> 28.4150° N, 79.1180° E</li>
+                </ul>
+                <div class="card-actions">
+                    <button class="btn-view" onclick="focusField(3)"><i class="fa-solid fa-map-location-dot"></i> View on Map</button>
+                    <button class="btn-edit"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark pt-5">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <a href="#" class="logo text-white">
+                    <i class="fa-solid fa-leaf text-green"></i> AgroTrack
+                </a>
+                <p class="text-gray mt-2">The future of farming, today. Smart analytics and tracking for modern agriculture.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="crop_tracker.html">Dashboard</a></li>
+                    <li><a href="my_fields.html">Field Mapping</a></li>
+                    <li><a href="pest_alert.html">Pest Protection</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="community.html">Community</a></li>
+                    <li><a href="weather.html">Weather</a></li>
+                    <li><a href="crop_report.html">Reports</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom mt-4" style="border-top:1px solid #333; padding-top:20px;">
+            <p>&copy; 2026 AgroTrack Inc. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Map Logic
+        const fieldsData = [
+            { id: "KB-170", area: "0.22 Bgl", crop: "Sugarcane", coords: [28.4089, 79.1234] },
+            { id: "KB-171", area: "0.35 Bgl", crop: "Wheat", coords: [28.4112, 79.1265] },
+            { id: "KB-172", area: "0.18 Bgl", crop: "Rice", coords: [28.4075, 79.1210] },
+            { id: "KB-173", area: "0.41 Bgl", crop: "Vegetables", coords: [28.4150, 79.1180] }
+        ];
+
+        const map = L.map('field-map').setView(fieldsData[0].coords, 16);
+
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        }).addTo(map);
+
+        const markers = [];
+
+        fieldsData.forEach((field, index) => {
+            const marker = L.marker(field.coords).addTo(map);
+            marker.bindPopup(`<b>${field.id}</b><br>Area: ${field.area}<br>Crop: ${field.crop}`);
+            markers.push(marker);
+            
+            // Draw a mock polygon around it to simulate field boundary
+            const lat = field.coords[0];
+            const lng = field.coords[1];
+            const bounds = [
+                [lat - 0.001, lng - 0.001],
+                [lat + 0.001, lng - 0.001],
+                [lat + 0.001, lng + 0.001],
+                [lat - 0.001, lng + 0.001]
+            ];
+            L.polygon(bounds, {color: '#1abc9c', fillOpacity: 0.2}).addTo(map);
+        });
+
+        // Open first popup
+        markers[0].openPopup();
+
+        // Focus function
+        function focusField(index) {
+            const field = fieldsData[index];
+            map.flyTo(field.coords, 17);
+            setTimeout(() => { markers[index].openPopup(); }, 500);
+
+            // Update Panel
+            document.getElementById('panel-field-name').innerText = field.id;
+            document.getElementById('panel-field-area').innerText = field.area;
+
+            // Update list styles
+            const listItems = document.querySelectorAll('.list-item');
+            listItems.forEach(item => item.classList.remove('active'));
+            listItems[index].classList.add('active');
+
+            // Scroll to map on mobile
+            if(window.innerWidth < 900) {
+                document.getElementById('field-map').scrollIntoView({behavior: 'smooth', block: 'center'});
+            }
+        }
+    </script>
+</body>
+</html>

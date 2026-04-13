@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Tracker | AgroTrack</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* crop_tracker.css - Custom Styling */
+        :root {
+            --hero-bg: #1a4a2e;
+        }
+
+        body {
+            background-color: #f4f6f0;
+        }
+
+        /* Hero */
+        .tracker-hero {
+            background-color: var(--hero-bg);
+            color: white;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            text-align: center;
+        }
+        .hero-title { font-family: var(--font-heading); font-size: 3rem; margin-bottom: 0.5rem; }
+        .hero-subtitle { font-size: 1.1rem; color: #e1e8e3; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;}
+        .hero-stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .hero-tag {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            font-weight: 500;
+        }
+
+        /* Field Selector Tabs */
+        .field-tabs-wrap {
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            margin-bottom: 3rem;
+            position: sticky;
+            top: 70px;
+            z-index: 100;
+        }
+        .field-tabs {
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .field-tabs::-webkit-scrollbar { display: none; }
+        .field-tab {
+            padding: 1.2rem 2rem;
+            font-weight: 600;
+            white-space: nowrap;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .field-tab.active {
+            color: var(--primary-green);
+            border-bottom-color: var(--primary-green);
+            background: #f0fdf4;
+        }
+        .field-tab.inactive { opacity: 0.5; }
+        .field-tab i { margin-right: 0.5rem; }
+
+        /* Overview Card */
+        .overview-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 3rem;
+        }
+        @media(max-width: 768px) {
+            .overview-card { grid-template-columns: 1fr; padding: 1.5rem; }
+        }
+        .overview-left h2 { font-size: 2.5rem; margin-bottom: 0.5rem; color: var(--text-main); }
+        .overview-left .crop-variety { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1.5rem; }
+        
+        .overview-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .meta-item span { display: block; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.2rem; }
+        .meta-item strong { display: block; font-size: 1.1rem; color: var(--text-main); }
+
+        .overview-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+        .countdown { font-size: 4rem; font-weight: 800; color: var(--primary-green); line-height: 1; }
+        .countdown-label { font-size: 1.2rem; font-weight: 600; color: var(--text-muted); }
+
+        /* Growth Progress Bar */
+        .growth-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 3rem;
+        }
+        .timeline-widget { position: relative; padding: 2rem 0; }
+        .progress-track {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            position: relative;
+            margin: 2rem 0;
+        }
+        .progress-fill {
+            position: absolute;
+            height: 100%;
+            background: var(--primary-green);
+            border-radius: 5px;
+            width: 60%;
+        }
+        .stage-marker {
+            position: absolute;
+            top: -30px;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-align: center;
+            white-space: nowrap;
+        }
+        .stage-marker::after {
+            content: '';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid #cbd5e1;
+            box-shadow: 0 0 0 4px white;
+            z-index: 2;
+        }
+        .stage-marker.done { color: var(--text-main); }
+        .stage-marker.done::after {
+            background: var(--primary-green);
+            border-color: var(--primary-green);
+        }
+        .stage-marker.current { color: var(--primary-green); }
+        .stage-marker.current::after {
+            background: white;
+            border-color: var(--primary-green);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 125, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(76, 175, 125, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 125, 0); }
+        }
+
+        /* Health Indicators */
+        .health-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .health-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border-top: 4px solid;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .health-card.good { border-top-color: #22c55e; }
+        .health-card.monitor { border-top-color: #f59e0b; }
+        .health-card.action { border-top-color: #ef4444; }
+        
+        .health-icon { font-size: 2rem; color: var(--text-muted); }
+        .health-card.good .health-icon { color: #22c55e; }
+        .health-info h4 { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 0.2rem; }
+        .health-info .value { font-size: 1.5rem; font-weight: 700; color: var(--text-main); line-height: 1.2; }
+        .health-info .status { font-size: 0.85rem; font-weight: 600; }
+        .health-card.good .status { color: #22c55e; }
+
+        /* Bottom Section Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+        @media(max-width: 992px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Activity Table */
+        .activity-card, .sidebar-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .activity-table-wrap { overflow-x: auto; }
+        .activity-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .activity-table th {
+            text-align: left;
+            padding: 1rem;
+            color: var(--text-muted);
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .activity-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            color: var(--text-main);
+        }
+        .activity-badge {
+            background: #f1f5f9;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        /* AI & Schedule */
+        .ai-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .ai-box h3 { color: #16a34a; font-size: 1.1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .ai-list { list-style: none; padding: 0; margin: 0; }
+        .ai-list li { margin-bottom: 0.8rem; display: flex; gap: 0.5rem; font-size: 0.95rem; color: #166534; }
+        
+        .schedule-list { list-style: none; padding: 0; margin: 0; }
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .schedule-date {
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 0.5rem;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 60px;
+        }
+        .schedule-date span { display: block; font-size: 0.8rem; text-transform: uppercase; font-weight: 700; }
+        .schedule-date strong { font-size: 1.2rem; }
+        .schedule-desc { font-weight: 500; }
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-leaf"></i> AgroTrack
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="index.html#features" class="active">Features <i class="fa-solid fa-chevron-down" style="font-size: 0.8rem; margin-left: 4px;"></i></a>
+                    <ul class="nav-dropdown">
+                        <li><a href="my_fields.html"><i class="fa-solid fa-map icon-left"></i> My Fields</a></li>
+                        <li><a href="crop_tracker.html" class="active"><i class="fa-solid fa-leaf icon-left"></i> Crop Tracker</a></li>
+                        <li><a href="pest_alert.html"><i class="fa-solid fa-bug icon-left"></i> Pest Alerts</a></li>
+                        <li><a href="crop_report.html"><i class="fa-solid fa-chart-line icon-left"></i> Reports</a></li>
+                        <li><a href="weather.html"><i class="fa-solid fa-cloud-sun icon-left"></i> Weather</a></li>
+                    </ul>
+                </li>
+                <li><a href="market.html">Market</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="login.html" class="login-btn">Login</a>
+                <a href="/register" class="cta-btn sm">Get Started Free</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="tracker-hero">
+        <div class="container relative" style="z-index: 1;">
+            <div class="hero-tag mb-3 d-inline-block"><i class="fa-solid fa-microchip"></i> AI Powered</div>
+            <h1 class="hero-title">Crop Tracker</h1>
+            <p class="hero-subtitle">Monitor crop growth stages, health, and harvest predictions field by field</p>
+            <div class="hero-stats-row">
+                <div class="hero-tag">🟢 3 Active Crops</div>
+                <div class="hero-tag">🟢 Next Harvest: 14 Days</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Field Selector Tabs -->
+    <div class="field-tabs-wrap">
+        <div class="container">
+            <div class="field-tabs">
+                <div class="field-tab active"><i class="fa-solid fa-check-circle text-green"></i> KB-170 (Sugarcane)</div>
+                <div class="field-tab"><i class="fa-solid fa-check-circle text-green"></i> KB-171 (Wheat)</div>
+                <div class="field-tab"><i class="fa-solid fa-check-circle text-green"></i> KB-172 (Rice)</div>
+                <div class="field-tab inactive"><i class="fa-solid fa-circle text-gray"></i> KB-173 (Vegetables)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <!-- Crop Overview Card -->
+        <div class="overview-card">
+            <div class="overview-left">
+                <h2>Sugarcane</h2>
+                <div class="crop-variety">Variety: Co 0238 • Planted in Field KB-170</div>
+                
+                <div class="overview-meta">
+                    <div class="meta-item">
+                        <span>Sowing Date</span>
+                        <strong>15 Oct 2025</strong>
+                    </div>
+                    <div class="meta-item">
+                        <span>Expected Harvest</span>
+                        <strong>10 Apr 2026</strong>
+                    </div>
+                    <div class="meta-item">
+                        <span>Field Area</span>
+                        <strong>0.22 Bgl</strong>
+                    </div>
+                    <div class="meta-item">
+                        <span>Current Weather</span>
+                        <strong>28°C, Partly Cloudy</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="overview-right">
+                <div class="countdown">14</div>
+                <div class="countdown-label">Days to Harvest</div>
+                <div class="progress" style="width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; margin-top: 1rem;">
+                    <div class="progress-bar" style="width: 95%; height: 100%; background: var(--primary-green); border-radius: 4px;"></div>
+                </div>
+                <p style="margin-top: 0.5rem; font-size:0.9rem; color:var(--text-muted);">95% of cycle complete</p>
+            </div>
+        </div>
+
+        <!-- Growth Stage Bar -->
+        <h3 class="mb-3">Growth Timeline</h3>
+        <div class="growth-card">
+            <div class="timeline-widget">
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: 75%;"></div>
+                    
+                    <div class="stage-marker done" style="left: 0%">Planting<br><span style="font-size:0.8rem; font-weight:400">Oct '25</span></div>
+                    <div class="stage-marker done" style="left: 25%">Germination<br><span style="font-size:0.8rem; font-weight:400">Nov '25</span></div>
+                    <div class="stage-marker done" style="left: 50%">Tillering<br><span style="font-size:0.8rem; font-weight:400">Jan '26</span></div>
+                    <div class="stage-marker current" style="left: 75%">Grand Growth<br><span style="font-size:0.8rem; font-weight:400">Current</span></div>
+                    <div class="stage-marker" style="left: 90%">Maturity<br><span style="font-size:0.8rem; font-weight:400">Apr '26</span></div>
+                    <div class="stage-marker" style="left: 100%">Harvest<br><span style="font-size:0.8rem; font-weight:400">May '26</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Indicators -->
+        <h3 class="mb-3">Current Health Metrics</h3>
+        <div class="health-grid">
+            <div class="health-card good">
+                <div class="health-icon"><i class="fa-solid fa-droplet"></i></div>
+                <div class="health-info">
+                    <h4>Soil Moisture</h4>
+                    <div class="value">65%</div>
+                    <div class="status">Good</div>
+                </div>
+            </div>
+            <div class="health-card good">
+                <div class="health-icon"><i class="fa-solid fa-temperature-half"></i></div>
+                <div class="health-info">
+                    <h4>Temperature</h4>
+                    <div class="value">32°C</div>
+                    <div class="status">Normal</div>
+                </div>
+            </div>
+            <div class="health-card good">
+                <div class="health-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <div class="health-info">
+                    <h4>Last Watered</h4>
+                    <div class="value">2 days</div>
+                    <div class="status">Schedule OK</div>
+                </div>
+            </div>
+            <div class="health-card good">
+                <div class="health-icon"><i class="fa-solid fa-leaf"></i></div>
+                <div class="health-info">
+                    <h4>Leaf Health</h4>
+                    <div class="value">87%</div>
+                    <div class="status">Healthy</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Setup -->
+        <div class="dashboard-grid">
+            <!-- Left col -->
+            <div class="activity-card">
+                <h3 class="mb-3">Activity Log</h3>
+                <div class="activity-table-wrap">
+                    <table class="activity-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Activity</th>
+                                <th>Done By</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="activity-badge">10 Apr</span></td>
+                                <td><strong>Fertilizer Applied</strong></td>
+                                <td>Vikram</td>
+                                <td>Urea 50kg per acre basis</td>
+                            </tr>
+                            <tr>
+                                <td><span class="activity-badge">05 Apr</span></td>
+                                <td><strong>Irrigation</strong></td>
+                                <td>Auto</td>
+                                <td>Drip system triggered</td>
+                            </tr>
+                            <tr>
+                                <td><span class="activity-badge">28 Mar</span></td>
+                                <td><strong>Pest Spray</strong></td>
+                                <td>Vikram</td>
+                                <td>Chlorpyrifos applied for stem borer</td>
+                            </tr>
+                            <tr>
+                                <td><span class="activity-badge">15 Mar</span></td>
+                                <td><strong>Soil Test</strong></td>
+                                <td>Lab</td>
+                                <td>Report attached in documents</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Right col -->
+            <div class="sidebar-wrapper">
+                <div class="ai-box">
+                    <h3><i class="fa-solid fa-robot"></i> AI Recommendations</h3>
+                    <ul class="ai-list">
+                        <li><i class="fa-solid fa-circle-check"></i> Apply potash fertilizer in next 7 days for better sucrose formation.</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Irrigation needed soon — soil moisture slowly dropping below 50%.</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Harvest window: 10–18 April 2026.</li>
+                        <li><i class="fa-solid fa-circle-check"></i> Pest risk implies low this week based on local weather data.</li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-card">
+                    <h3 class="mb-3">Upcoming Schedule</h3>
+                    <ul class="schedule-list">
+                        <li class="schedule-item">
+                            <div class="schedule-date"><span>Apr</span><strong>15</strong></div>
+                            <div class="schedule-desc">Irrigation Due</div>
+                        </li>
+                        <li class="schedule-item">
+                            <div class="schedule-date"><span>Apr</span><strong>18</strong></div>
+                            <div class="schedule-desc">Fertilizer Application</div>
+                        </li>
+                        <li class="schedule-item">
+                            <div class="schedule-date"><span>Apr</span><strong>25</strong></div>
+                            <div class="schedule-desc">Pest Inspection</div>
+                        </li>
+                        <li class="schedule-item">
+                            <div class="schedule-date"><span>May</span><strong>02</strong></div>
+                            <div class="schedule-desc" style="color:var(--primary-green); font-weight:700;">Est. Harvest Begin</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div> <!-- /container -->
+
+    <!-- Footer -->
+    <footer class="footer bg-dark pt-5">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <a href="#" class="logo text-white">
+                    <i class="fa-solid fa-leaf text-green"></i> AgroTrack
+                </a>
+                <p class="text-gray mt-2">The future of farming, today. Smart analytics and tracking for modern agriculture.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="crop_tracker.html">Dashboard</a></li>
+                    <li><a href="my_fields.html">Field Mapping</a></li>
+                    <li><a href="pest_alert.html">Pest Protection</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="community.html">Community</a></li>
+                    <li><a href="weather.html">Weather</a></li>
+                    <li><a href="crop_report.html">Reports</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom mt-4" style="border-top:1px solid #333; padding-top:20px;">
+            <p>&copy; 2026 AgroTrack Inc. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Main scripts -->
+    <script src="script.js"></script>
+    <script>
+        // Simple tab switching mock logic
+        const tabs = document.querySelectorAll('.field-tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                if(this.classList.contains('inactive')) return;
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
