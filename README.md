@@ -1,17 +1,17 @@
-# AgroTrack Documentation
+# KisanMitra Documentation
                 
 ## Profile Page Specifications
 
 **Page: Profile**
 **Route: /profile**
 
-The Profile page serves as the farmer's personal dashboard on AgroTrack. It gives users a centralized place to manage their identity, farm data, connected devices, and account preferences.
+The Profile page serves as the farmer's personal dashboard on KisanMitra. It gives users a centralized place to manage their identity, farm data, connected devices, and account preferences.
 
 ---
 
 **1. Header / Hero Section**
 
-Displays the farmer's avatar (initials or uploaded photo), full name, email address, and phone number. A colored badge shows the current plan (Free / Pro / Premium). Background uses AgroTrack's dark green theme to match the overall branding.
+Displays the farmer's avatar (initials or uploaded photo), full name, email address, and phone number. A colored badge shows the current plan (Free / Pro / Premium). Background uses KisanMitra's dark green theme to match the overall branding.
 
 ---
 
@@ -67,7 +67,7 @@ A full-width button at the bottom of the page, styled in a soft red to clearly i
 
 ---
 
-**Color Scheme (consistent with AgroTrack branding):**
+**Color Scheme (consistent with KisanMitra branding):**
 - Dark green: `#1a3a2a` — navbar, hero background
 - Accent green: `#4caf7d` — buttons, badges, online indicators
 - Page background: `#f4f6f0` — light greenish white
